@@ -7,6 +7,8 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using Application.Products;
+using AutoMapper.QueryableExtensions;
+using AutoMapper;
 
 namespace Application.Products
 {
@@ -21,30 +23,40 @@ namespace Application.Products
         
         {
             private readonly DataContext _context;
+            private readonly IMapper _mapper;
 
-            public Handler(DataContext context)
+            public Handler(DataContext context, IMapper mapper)
             {
+             _mapper = mapper;
                 _context = context;
             }
 
             public async Task<List<ProductDto>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var products = _context.Products
-                    .Include(x => x.Category)
-                    .Select(x => new ProductDto 
-                    {
-                        ProductId = x.ProductId,
-                        ProductSku= x.ProductSku,
-                        ProductName = x.ProductName,
-                        ProductPrice = x.ProductPrice,
-                        ProductQuantity = x.ProductQuantity,
-                        CategoryId = x.Category.CategoryId,
-                        CategoryName = x.Category.CategoryName
-                    })
-                    ;
-                   
+               var products = await _context.Products
+                    .ProjectTo<ProductDto>(_mapper.ConfigurationProvider)
+                    .ToListAsync(cancellationToken);;
 
-                return await products.ToListAsync();
+                return products;
+
+
+
+                // Using simple queries:
+                // 
+                // var products = _context.Products
+                //     .Include(x => x.Category)
+                //     .Select(x => new ProductDto 
+                //     {
+                //         ProductId = x.ProductId,
+                //         ProductSku= x.ProductSku,
+                //         ProductName = x.ProductName,
+                //         ProductPrice = x.ProductPrice,
+                //         ProductQuantity = x.ProductQuantity,
+                //         CategoryId = x.Category.CategoryId,
+                //         CategoryName = x.Category.CategoryName
+                //     });
+                // 
+                // return await products.ToListAsync();
             }
         }
 
