@@ -3,24 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Application.Products;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace Application.Categories
 {
-    public class List
+    public class Details
     {
-        public class  Query : IRequest<List<CategoryDto>>
+        public class  Query : IRequest<CategoryDto>
         {
-
+            public Guid CategoryId { get; set; }
         }
 
-        public class Handler : IRequestHandler<Query, List<CategoryDto>>
+        public class Handler : IRequestHandler<Query,CategoryDto>
         
         {
             private readonly DataContext _context;
@@ -28,22 +26,18 @@ namespace Application.Categories
 
             public Handler(DataContext context, IMapper mapper)
             {
-                 _mapper = mapper;
+                _mapper = mapper;
                 _context = context;
             }
 
-            public async Task<List<CategoryDto>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<CategoryDto> Handle(Query request, CancellationToken cancellationToken)
             {
-                // Using Automapper:
                 var categories = await _context.Categories
                     .ProjectTo<CategoryDto>(_mapper.ConfigurationProvider)
-                    .ToListAsync(cancellationToken);
+                    .FirstOrDefaultAsync (x=> x.CategoryId == request.CategoryId);
 
                 return categories;
-
             }
         }
-
-
     }
 }

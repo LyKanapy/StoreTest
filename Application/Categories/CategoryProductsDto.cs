@@ -1,16 +1,16 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.Products;
 
-namespace Domain
+namespace Application.Categories
 {
-    public class Category
+    public class CategoryProductsDto
     {
         public Guid CategoryId { get; set; }
         public string CategoryName { get; set; }
-        public ICollection<Product> Products { get; set; }
 
+        public ICollection<ProductDto> Products {get; set;}
     }
 }

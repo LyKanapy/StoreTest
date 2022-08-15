@@ -14,9 +14,10 @@ namespace Application.Core
         public MappingProfiles ()
         {
             CreateMap<Category, CategoryDto>();
-            CreateMap<Product, ProductDto>()
-                .ForMember(d=>d.CategoryId, o=>o.MapFrom(s => s.Category.CategoryId))
-                .ForMember(d=>d.CategoryName, o=>o.MapFrom(s => s.Category.CategoryName));
+            CreateMap<CategoryDto, Category>();
+            CreateMap<Category, CategoryProductsDto>();
+            CreateMap<Product, ProductDto>();
+            CreateMap<ProductDto, Product>();
         }
     }
 }

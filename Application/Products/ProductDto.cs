@@ -1,4 +1,6 @@
 using System;
+using Application.Categories;
+using Domain;
 
 namespace Application.Products
 {
@@ -9,9 +11,7 @@ namespace Application.Products
         public string ProductName { get; set; }
         public double ProductPrice { get; set; }
         public int ProductQuantity { get; set; }
-        public Guid CategoryId { get; set; }
-        public string CategoryName { get; set; }
+        public CategoryDto Category { get; set; }
 
-        
-     }
+    }
 }

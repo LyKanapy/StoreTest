@@ -35,13 +35,11 @@ namespace Application.Products
             {
                var products = await _context.Products
                     .ProjectTo<ProductDto>(_mapper.ConfigurationProvider)
-                    .ToListAsync(cancellationToken);;
+                    .ToListAsync(cancellationToken);
 
                 return products;
 
-
-
-                // Using simple queries:
+                // Using queries:
                 // 
                 // var products = _context.Products
                 //     .Include(x => x.Category)

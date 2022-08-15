@@ -26,10 +26,17 @@ namespace Persistence
         { 
             base.OnModelCreating(builder);
 
-            builder.Entity<Product>()
-                .HasOne(a => a.Category)
-                .WithMany (b=>b.Products)
-                .HasForeignKey(c=>c.CurrentCategoryId);
+            builder.Entity<Category>()
+                .HasMany<Product>(a => a.Products)
+                .WithOne (b=>b.Category)
+                .HasForeignKey(c=>c.CategoryId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+            // builder.Entity<Product>()
+            //     .HasOne(a => a.Category)
+            //     .WithMany (b=>b.Products)
+            //     .HasForeignKey(c=>c.CategoryId)
+            //     .OnDelete(DeleteBehavior.Cascade);
             
             // builder.Entity<Order>()
             //     .HasOne(a => a.Customer)

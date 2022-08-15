@@ -56,7 +56,9 @@ namespace Persistence
                         Category = categories[1]
                     },
                 };
-            
+
+            await context.Categories.AddRangeAsync(categories);    
+            await context.Products.AddRangeAsync(products);    
             await context.SaveChangesAsync();
         }
     }

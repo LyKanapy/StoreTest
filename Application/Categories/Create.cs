@@ -6,19 +6,21 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Domain;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
 
-namespace Application.Products
+namespace Application.Categories
 {
     public class Create
     {
-        public class Command : IRequest
-            {
-                public ProductDto Product {get; set;}
-            }
-        
-        public class Handler : IRequestHandler<Command>
+        public class Command : IRequest<Unit>
         {
+            public CategoryDto Category;
+        }
+
+        public class Handler : IRequestHandler<Command, Unit>
+        {
+
             private readonly IMapper _mapper;
             private readonly DataContext _context;
 
@@ -29,22 +31,19 @@ namespace Application.Products
                 _context = context;
             }
 
-
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
-                // var productToAdd = _mapper.Map<ProductDto, Product>(request.Product);
-
-                var productToAdd = new Product();
+                // Using Automapper
                 
-                productToAdd.ProductName = request.Product.ProductName;
-                productToAdd.ProductPrice = request.Product.ProductPrice;
-                productToAdd.ProductQuantity = request.Product.ProductQuantity;
-                productToAdd.ProductSku = request.Product.ProductSku;
+                var categoryToAdd = _mapper.Map<CategoryDto, Category>(request.Category);
+                
+                // Using simple expression
+                //
+                // var categoryToAdd = new Category();
+                // categoryToAdd.CategoryName = request.Category.CategoryName;
 
-                _context.Products.Add(productToAdd);
-
+                _context.Categories.Add(categoryToAdd);
                 await _context.SaveChangesAsync();
-
                 return Unit.Value;
             }
         }

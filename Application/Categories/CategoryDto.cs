@@ -11,6 +11,5 @@ namespace Application.Categories
         public Guid CategoryId { get; set; }
         public string CategoryName { get; set; }
 
-        public ICollection<ProductDto> Products {get; set;}
     }
 }

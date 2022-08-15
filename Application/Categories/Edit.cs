@@ -13,14 +13,14 @@ using Persistence;
 
 namespace Application.Categories
 {
-    public class List
+    public class Edit
     {
-        public class  Query : IRequest<List<CategoryDto>>
+        public class  Query : IRequest<Unit>
         {
-
+            public CategoryDto Category { get; set; }
         }
 
-        public class Handler : IRequestHandler<Query, List<CategoryDto>>
+        public class Handler : IRequestHandler<Query,Unit>
         
         {
             private readonly DataContext _context;
@@ -28,22 +28,20 @@ namespace Application.Categories
 
             public Handler(DataContext context, IMapper mapper)
             {
-                 _mapper = mapper;
+                _mapper = mapper;
                 _context = context;
             }
 
-            public async Task<List<CategoryDto>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Unit> Handle(Query request, CancellationToken cancellationToken)
             {
-                // Using Automapper:
-                var categories = await _context.Categories
-                    .ProjectTo<CategoryDto>(_mapper.ConfigurationProvider)
-                    .ToListAsync(cancellationToken);
+                var category = await _context.Categories.FindAsync(request.Category.CategoryId);
+                category.CategoryName = request.Category.CategoryName;
+                //  _mapper.Map(category, request.Category);
 
-                return categories;
+                await _context.SaveChangesAsync();
 
+                return Unit.Value;
             }
         }
-
-
     }
 }
