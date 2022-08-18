@@ -16,7 +16,6 @@ namespace Domain
         public string CustomerAdressCity { get; set; }
         public string CustomerAdressStreet { get; set; }
         public string CustomerAdressHouse { get; set; }
-
         public ICollection<Order> Orders { get; set; }
     }
 }

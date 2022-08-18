@@ -30,6 +30,22 @@ namespace Persistence
                 }
             };
 
+            var orders = new List<Order> {
+                new Order {
+                    OrderNumber = "Order01",
+                    OrderStatus = "Active",
+                    OrderTotal = 9.99,
+                    OrderComment = "This is comment"
+                },
+                new Order {
+                    OrderNumber = "Order02",
+                    OrderStatus = "Fullfilled",
+                    OrderTotal = 6.99,
+                    OrderComment = "This is comment"
+                },
+            };
+
+
             var products = new List<Product>
             {
                 new Product
@@ -66,9 +82,27 @@ namespace Persistence
                     },
                 };
 
+            var orderitem = new List<OrderItem> {
+                new OrderItem {
+                    Order = orders[0],
+                    Product = products[1]
+                },
+                new OrderItem {
+                    Order = orders[1],
+                    Product = products[1]
+                },
+                new OrderItem {
+                    Order = orders[1],
+                    Product = products[2]
+                }
+            };
+                
+
             await context.Categories.AddRangeAsync(categories);    
             await context.Products.AddRangeAsync(products);    
             await context.Suppliers.AddRangeAsync(suppliers);    
+            await context.Orders.AddRangeAsync(orders);    
+            await context.OrderItems.AddRangeAsync(orderitem);    
             await context.SaveChangesAsync();
         }
     }

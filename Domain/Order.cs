@@ -11,7 +11,7 @@ namespace Domain
 
         public string OrderNumber { get; set; }
         public DateTime Orderdate { get; set; }
-        public decimal OrderTotal { get; set; }
+        public double OrderTotal { get; set; }
         public string OrderStatus { get; set; }
         public string OrderComment { get; set; }
         public Customer Customer { get; set; }

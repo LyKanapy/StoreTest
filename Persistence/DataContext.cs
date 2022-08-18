@@ -18,8 +18,8 @@ namespace Persistence
         public  DbSet<Category> Categories { get; set; }
         public  DbSet<Supplier> Suppliers { get; set; }
 
-        // public  DbSet<Order> Orders { get; set; }
-        // public  DbSet<OrderItem> OrderItems { get; set; }
+        public  DbSet<Order> Orders { get; set; }
+        public  DbSet<OrderItem> OrderItems { get; set; }
         // public  DbSet<Customer> Customers { get; set; }
 
 
@@ -53,15 +53,15 @@ namespace Persistence
             //     .HasOne(a => a.Supplier)
             //     .WithMany (c=>c.Products);
 
-            // builder.Entity<OrderItem>(x => x.HasKey(aa=>new {aa.OrderId, aa.ProductId}));
-            // builder.Entity<OrderItem>()
-            //     .HasOne(aa => aa.Order)
-            //     .WithMany (c=>c.OrderItems)
-            //     .HasForeignKey (aa=>aa.OrderId);
-            // builder.Entity<OrderItem>()
-            //     .HasOne(aa => aa.Product)
-            //     .WithMany (c=>c.OrderItems)
-            //     .HasForeignKey (aa=>aa.ProductId);
+            builder.Entity<OrderItem>(x => x.HasKey(aa=>new {aa.OrderId, aa.ProductId}));
+            builder.Entity<OrderItem>()
+                .HasOne(aa => aa.Order)
+                .WithMany (c=>c.OrderItems)
+                .HasForeignKey (aa=>aa.OrderId);
+            builder.Entity<OrderItem>()
+                .HasOne(aa => aa.Product)
+                .WithMany (c=>c.OrderItems)
+                .HasForeignKey (aa=>aa.ProductId);
                 
         }
     }

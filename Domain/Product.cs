@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Domain
 {
@@ -14,7 +15,7 @@ namespace Domain
         public Guid? SupplierId { get; set; }
         public Category Category { get; set; }
         public Supplier Supplier { get; set; }
-        // public ICollection<OrderItem> OrderItems { get; set; }
+        public ICollection<OrderItem> OrderItems { get; set; }
         
      }
 }
