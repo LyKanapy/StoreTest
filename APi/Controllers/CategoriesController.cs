@@ -34,7 +34,7 @@ namespace APi.Controllers
             return result;
         }
 
-        [HttpPut("edit/{id}")]
+        [HttpPut("{id}")]
         public async Task<ActionResult<Unit>> EditCategory(Guid id, CategoryDto category)
         {
             category.CategoryId=id;

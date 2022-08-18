@@ -12,6 +12,7 @@ namespace Application.Products
         public double ProductPrice { get; set; }
         public int ProductQuantity { get; set; }
         public CategoryDto Category { get; set; }
+        public SupplierDto Supplier { get; set; }
 
     }
 }

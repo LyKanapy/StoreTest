@@ -4,19 +4,18 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using Domain;
 using MediatR;
 using Persistence;
 
-namespace Application.Products
+namespace Application.Suppliers
 {
-    public class Create
+    public class Delete
     {
-        public class Command : IRequest
-            {
-                public ProductDto Product {get; set;}
-            }
-        
+        public class Command : IRequest<Unit>
+        {
+            public Guid SupplierId { get; set; }
+        }
+
         public class Handler : IRequestHandler<Command>
         {
             private readonly IMapper _mapper;
@@ -29,21 +28,11 @@ namespace Application.Products
                 _context = context;
             }
 
-
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
-                var productToAdd = _mapper.Map<ProductDto, Product>(request.Product);
+                var supplier = await _context.Suppliers.FindAsync(request.SupplierId);
 
-                
-
-                // var productToAdd = new Product();
-                
-                // productToAdd.ProductName = request.Product.ProductName;
-                // productToAdd.ProductPrice = request.Product.ProductPrice;
-                // productToAdd.ProductQuantity = request.Product.ProductQuantity;
-                // productToAdd.ProductSku = request.Product.ProductSku;
-
-                _context.Products.Add(productToAdd);
+                _context.Remove(supplier);
 
                 await _context.SaveChangesAsync();
 

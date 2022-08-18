@@ -11,8 +11,9 @@ namespace Domain
         public double ProductPrice { get; set; }
         public int ProductQuantity { get; set; }
         public Guid? CategoryId { get; set; }
+        public Guid? SupplierId { get; set; }
         public Category Category { get; set; }
-        // public Supplier Supplier { get; set; }
+        public Supplier Supplier { get; set; }
         // public ICollection<OrderItem> OrderItems { get; set; }
         
      }

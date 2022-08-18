@@ -16,8 +16,10 @@ namespace Application.Core
             CreateMap<Category, CategoryDto>();
             CreateMap<CategoryDto, Category>();
             CreateMap<Category, CategoryProductsDto>();
-            CreateMap<Product, ProductDto>();
             CreateMap<ProductDto, Product>();
+            CreateMap<Product, ProductDto>();
+            CreateMap<Supplier, SupplierDto>();
+            CreateMap<SupplierDto, Supplier>();
         }
     }
 }

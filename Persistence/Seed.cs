@@ -21,6 +21,15 @@ namespace Persistence
                 }
             };
 
+            var suppliers = new List<Supplier> {
+                new Supplier {
+                    CompanyName = "Company 01"
+                },
+                new Supplier {
+                    CompanyName = "Company 02"
+                }
+            };
+
             var products = new List<Product>
             {
                 new Product
@@ -59,6 +68,7 @@ namespace Persistence
 
             await context.Categories.AddRangeAsync(categories);    
             await context.Products.AddRangeAsync(products);    
+            await context.Suppliers.AddRangeAsync(suppliers);    
             await context.SaveChangesAsync();
         }
     }

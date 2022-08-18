@@ -16,10 +16,11 @@ namespace Persistence
 
         public  DbSet<Product> Products { get; set; }
         public  DbSet<Category> Categories { get; set; }
+        public  DbSet<Supplier> Suppliers { get; set; }
+
         // public  DbSet<Order> Orders { get; set; }
         // public  DbSet<OrderItem> OrderItems { get; set; }
         // public  DbSet<Customer> Customers { get; set; }
-        // public  DbSet<Supplier> Suppliers { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -31,6 +32,12 @@ namespace Persistence
                 .WithOne (b=>b.Category)
                 .HasForeignKey(c=>c.CategoryId)
             .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Supplier>()
+                .HasMany<Product>(a => a.Products)
+                .WithOne (b=>b.Supplier)
+                .HasForeignKey(c=>c.SupplierId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // builder.Entity<Product>()
             //     .HasOne(a => a.Category)
