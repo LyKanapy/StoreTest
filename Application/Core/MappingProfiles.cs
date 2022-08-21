@@ -21,13 +21,15 @@ namespace Application.Core
             CreateMap<Product, ProductDto>();
             CreateMap<Supplier, SupplierDto>();
             CreateMap<SupplierDto, Supplier>();
-            CreateMap<Order, OrderDto>();
-            CreateMap<OrderItem, OrderedProductDto>()
-                .ForMember(d=> d.ProductId, o=> o.MapFrom(s=>s.Product.ProductId))
-                .ForMember(d=> d.ProductName, o=> o.MapFrom(s=>s.Product.ProductName))
-                .ForMember(d=> d.ProductSku, o=> o.MapFrom(s=>s.Product.ProductSku))
-                .ForMember(d=> d.ProductPrice, o=> o.MapFrom(s=>s.Product.ProductPrice))
-                .ForMember(d=> d.ProductQuantity, o=> o.MapFrom(s=>s.Product.ProductQuantity));
+            CreateMap<OrderDto, Order>();
+
+
+        // Mapping many to many relationship between orders and products (shows what products are in the order)
+            CreateMap<Product, OrderedProductDto>();
+            CreateMap<Order, OrderDto>()
+                .ForMember(d=>d.OrderedProducts, o => o.MapFrom(x=>x.OrderItems.Select(y=> y.Product)));
         }
+
+        
     }
 }

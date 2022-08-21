@@ -25,29 +25,29 @@ namespace APi.Controllers
             return await _mediator.Send(new List.Query());
         }
 
-        // [HttpGet("{id}")]
-        // public async Task<ActionResult<ProductDto>> GetProduct(Guid id)
-        // {
-        //     return await _mediator.Send(new Details.Query{ProductId=id});
-        // }
+        [HttpGet ("{id}")]
+        public async Task<ActionResult<OrderDto>> GetOrder(Guid id)
+        {
+            return await _mediator.Send(new Details.Query{OrderId = id});
+        }
 
-        // [HttpPost]
-        // public async Task<ActionResult<Unit>> CreateProduct(ProductDto product)
-        // {
-        //     return await _mediator.Send(new Create.Command{Product = product});
-        // }
+        [HttpPost]
+        public async Task<ActionResult<Unit>> CreateOrder(OrderDto order)
+        {
+            return await _mediator.Send(new Create.Command{Order = order});
+        }
 
-        // [HttpPut("{id}")]
-        // public async Task<ActionResult<Unit>> EditProduct(Guid id, ProductDto product)
-        // {
-        //     product.ProductId=id;
-        //     return await _mediator.Send(new Edit.Command{Product = product});
-        // }
+        [HttpPut("{id}")]
+        public async Task<ActionResult<Unit>> EditOrder(Guid id, OrderDto order)
+        {
+            order.OrderId=id;
+            return await _mediator.Send(new Edit.Command{Order = order});
+        }
 
-        // [HttpDelete("{id}")]
-        // public async Task<ActionResult<Unit>> DeleteProduct(Guid id)
-        // {
-        //     return await _mediator.Send(new Delete.Command{Id = id});
-        // }
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Unit>> DeleteOrder(Guid id)
+        {
+            return await _mediator.Send(new Delete.Command{OrderId = id});
+        }
     }
 }
