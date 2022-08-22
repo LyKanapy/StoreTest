@@ -52,5 +52,11 @@ namespace APi.Controllers
             return await _mediator.Send(new Delete.Command{Id = id});
         }
 
+        [HttpPut("{id}/{categoryId}")]
+        public async Task<ActionResult<Unit>> AddToCategory(Guid id, Guid categoryId)
+        {
+            return await _mediator.Send(new AddToCategory.Command{ ProductId = id, CategoryId = categoryId});
+        }
+
     }
 }

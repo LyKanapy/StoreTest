@@ -14,7 +14,7 @@ namespace Application.Products
         public int ProductQuantity { get; set; }
         public CategoryDto Category { get; set; }
         public SupplierDto Supplier { get; set; }
-        public ICollection<OrderItem> OrderItems { get; set; }
+        // public ICollection<OrderItem> OrderItems { get; set; }
 
     }
 }
