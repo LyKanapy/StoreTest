@@ -20,7 +20,7 @@ namespace Persistence
 
         public  DbSet<Order> Orders { get; set; }
         public  DbSet<OrderItem> OrderItems { get; set; }
-        // public  DbSet<Customer> Customers { get; set; }
+        public  DbSet<Customer> Customers { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -37,6 +37,12 @@ namespace Persistence
                 .HasMany<Product>(a => a.Products)
                 .WithOne (b=>b.Supplier)
                 .HasForeignKey(c=>c.SupplierId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Customer>()
+                .HasMany<Order>(a => a.Orders)
+                .WithOne (b=>b.Customer)
+                .HasForeignKey(c=>c.CustomerId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             // builder.Entity<Product>()

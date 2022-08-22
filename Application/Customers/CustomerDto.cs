@@ -1,11 +1,13 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.Orders;
 
-namespace Domain
+namespace Application.Customers
 {
-    public class Customer
+    public class CustomerDto
     {
         public Guid CustomerId { get; set; }
         public string CustomerName { get; set; }
@@ -16,6 +18,6 @@ namespace Domain
         public string CustomerAdressCity { get; set; }
         public string CustomerAdressStreet { get; set; }
         public string CustomerAdressHouse { get; set; }
-        public ICollection<Order> Orders { get; set; }
+        public ICollection<OrderShortDto> Orders { get; set; }
     }
 }

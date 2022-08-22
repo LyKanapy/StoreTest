@@ -20,13 +20,13 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Customer",
+                name: "Customers",
                 columns: table => new
                 {
                     CustomerId = table.Column<Guid>(type: "TEXT", nullable: false),
                     CustomerName = table.Column<string>(type: "TEXT", nullable: true),
                     CustomerSurname = table.Column<string>(type: "TEXT", nullable: true),
-                    CustomerPhone = table.Column<int>(type: "INTEGER", nullable: false),
+                    CustomerPhone = table.Column<string>(type: "TEXT", nullable: true),
                     CustomerEmail = table.Column<string>(type: "TEXT", nullable: true),
                     CustomerAdressCountry = table.Column<string>(type: "TEXT", nullable: true),
                     CustomerAdressCity = table.Column<string>(type: "TEXT", nullable: true),
@@ -35,7 +35,7 @@ namespace Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Customer", x => x.CustomerId);
+                    table.PrimaryKey("PK_Customers", x => x.CustomerId);
                 });
 
             migrationBuilder.CreateTable(
@@ -60,17 +60,17 @@ namespace Persistence.Migrations
                     OrderTotal = table.Column<double>(type: "REAL", nullable: false),
                     OrderStatus = table.Column<string>(type: "TEXT", nullable: true),
                     OrderComment = table.Column<string>(type: "TEXT", nullable: true),
-                    CustomerId = table.Column<Guid>(type: "TEXT", nullable: true)
+                    CustomerId = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Orders", x => x.OrderId);
                     table.ForeignKey(
-                        name: "FK_Orders_Customer_CustomerId",
+                        name: "FK_Orders_Customers_CustomerId",
                         column: x => x.CustomerId,
-                        principalTable: "Customer",
+                        principalTable: "Customers",
                         principalColumn: "CustomerId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -161,7 +161,7 @@ namespace Persistence.Migrations
                 name: "Products");
 
             migrationBuilder.DropTable(
-                name: "Customer");
+                name: "Customers");
 
             migrationBuilder.DropTable(
                 name: "Categories");

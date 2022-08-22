@@ -54,15 +54,15 @@ namespace Persistence.Migrations
                     b.Property<string>("CustomerName")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("CustomerPhone")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("CustomerPhone")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("CustomerSurname")
                         .HasColumnType("TEXT");
 
                     b.HasKey("CustomerId");
 
-                    b.ToTable("Customer");
+                    b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("Domain.Order", b =>
@@ -71,7 +71,7 @@ namespace Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("CustomerId")
+                    b.Property<Guid>("CustomerId")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("OrderComment")
@@ -168,7 +168,9 @@ namespace Persistence.Migrations
                 {
                     b.HasOne("Domain.Customer", "Customer")
                         .WithMany("Orders")
-                        .HasForeignKey("CustomerId");
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Customer");
                 });

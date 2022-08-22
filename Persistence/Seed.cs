@@ -30,19 +30,44 @@ namespace Persistence
                 }
             };
 
+            var customers = new List<Customer> {
+                new Customer {
+                    CustomerName = "Ly",
+                    CustomerSurname = "Kanapy",
+                    CustomerPhone = "3568456321",
+                    CustomerEmail = "customer@mail.com",
+                    CustomerAdressCountry = "Estonia",
+                    CustomerAdressCity = "Dunnen",
+                    CustomerAdressStreet = "Sutien",
+                    CustomerAdressHouse = "15",
+                },
+                new Customer {
+                    CustomerName = "Bob",
+                    CustomerSurname = "Stephen",
+                    CustomerPhone = "5166658489",
+                    CustomerEmail = "customer@mail.com",
+                    CustomerAdressCountry = "India",
+                    CustomerAdressCity = "Dephi",
+                    CustomerAdressStreet = "Streto",
+                    CustomerAdressHouse = "1053",
+                }
+            };
+
             var orders = new List<Order> {
                 new Order {
                     OrderNumber = "Order01",
                     OrderStatus = "Active",
                     OrderTotal = 9.99,
-                    OrderComment = "This is comment"
+                    OrderComment = "This is comment",
+                    Customer = customers[0]
                 },
                 new Order {
                     OrderNumber = "Order02",
                     OrderStatus = "Fullfilled",
                     OrderTotal = 6.99,
-                    OrderComment = "This is comment"
-                },
+                    OrderComment = "This is comment",
+                    Customer = customers[1]
+                }
             };
 
 
