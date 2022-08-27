@@ -20,7 +20,7 @@ namespace APi.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<CustomerDto>>> GetCustomers()
+        public async Task<ActionResult<List<CustomerShortDto>>> GetCustomers()
         {
             return await _mediator.Send(new List.Query());
         }

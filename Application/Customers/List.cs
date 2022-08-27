@@ -13,12 +13,12 @@ namespace Application.Customers
 {
 public class List
     {
-        public class  Query : IRequest<List<CustomerDto>>
+        public class  Query : IRequest<List<CustomerShortDto>>
         {
 
         }
 
-        public class Handler : IRequestHandler<Query, List<CustomerDto>>
+        public class Handler : IRequestHandler<Query, List<CustomerShortDto>>
         
         {
             private readonly DataContext _context;
@@ -30,10 +30,10 @@ public class List
                 _context = context;
             }
 
-            public async Task<List<CustomerDto>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<List<CustomerShortDto>> Handle(Query request, CancellationToken cancellationToken)
             {
                var customers = await _context.Customers
-                    .ProjectTo<CustomerDto>(_mapper.ConfigurationProvider)
+                    .ProjectTo<CustomerShortDto>(_mapper.ConfigurationProvider)
                     .ToListAsync(cancellationToken);
 
                 return customers;

@@ -19,7 +19,10 @@ namespace Application.Core
             CreateMap<CategoryDto, Category>();
             CreateMap<Category, CategoryProductsDto>();
             CreateMap<ProductDto, Product>();
-            CreateMap<Product, ProductDto>();
+            CreateMap<Product, ProductDto>()
+                .ForMember(d=>d.SupplierName, o => o.MapFrom(x=>x.Supplier.CompanyName))
+                .ForMember(d=>d.CategoryName, o => o.MapFrom(x=>x.Category.CategoryName));
+
             CreateMap<Supplier, SupplierDto>();
             CreateMap<SupplierDto, Supplier>();
             CreateMap<OrderDto, Order>();

@@ -13,12 +13,12 @@ namespace Application.Categories
 {
     public class Details
     {
-        public class  Query : IRequest<CategoryDto>
+        public class  Query : IRequest<CategoryProductsDto>
         {
             public Guid CategoryId { get; set; }
         }
 
-        public class Handler : IRequestHandler<Query,CategoryDto>
+        public class Handler : IRequestHandler<Query,CategoryProductsDto>
         
         {
             private readonly DataContext _context;
@@ -30,10 +30,10 @@ namespace Application.Categories
                 _context = context;
             }
 
-            public async Task<CategoryDto> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<CategoryProductsDto> Handle(Query request, CancellationToken cancellationToken)
             {
                 var categories = await _context.Categories
-                    .ProjectTo<CategoryDto>(_mapper.ConfigurationProvider)
+                    .ProjectTo<CategoryProductsDto>(_mapper.ConfigurationProvider)
                     .FirstOrDefaultAsync (x=> x.CategoryId == request.CategoryId);
 
                 return categories;

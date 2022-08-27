@@ -1,5 +1,9 @@
 import axios, { AxiosResponse } from "axios";
+import { Category } from "../models/category";
+import { Customer } from "../models/customer";
+import { Order } from "../models/order";
 import { Product } from "../models/product";
+import { Supplier } from "../models/supplier";
 
 axios.defaults.baseURL = "https://localhost:5000/api";
 
@@ -13,11 +17,51 @@ const request = {
 };
 
 const Products = {
-    list: () => request.get<Product[]>("/Products")
+    list: () => request.get<Product[]>("/Products"),
+    details: (id?: string) => request.get<Product>(`/Products/${id}`),
+    create: (product: Product) => request.post<void>(`/Products/`,product),
+    update: (product: Product) => request.put<void>(`/Products/${product.productId}`,product),
+    delete: (id: string) => request.del<void>(`/Products/${id}`)
+};
+
+const Categories = {
+    list: () => request.get<Category[]>("/Categories"),
+    details: (id?: string) => request.get<Category>(`/Categories/${id}`),
+    create: (category: Category) => request.post<void>(`/Categories/`, category),
+    update: (category: Category) => request.put<void>(`/Categories/${category.categoryId}`,category),
+    delete: (id: string) => request.del<void>(`/Categories/${id}`)
+};
+
+const Customers = {
+    list: () => request.get<Customer[]>("/Customers"),
+    details: (id?: string) => request.get<Customer>(`/Customers/${id}`),
+    create: (customer: Customer) => request.post<void>(`/Customers/`, customer),
+    update: (customer: Customer) => request.put<void>(`/Customers/${customer.customerId}`,customer),
+    delete: (id: string) => request.del<void>(`/Customers/${id}`)
+};
+
+const Orders = {
+    list: () => request.get<Order[]>("/Orders"),
+    details: (id?: string) => request.get<Order>(`/Orders/${id}`),
+    create: (order: Order) => request.post<void>(`/Orders/`, order),
+    update: (order: Order) => request.put<void>(`/Orders/${order.orderId}`,order),
+    delete: (id: string) => request.del<void>(`/Orders/${id}`)
+};
+
+const Suppliers = {
+    list: () => request.get<Supplier[]>("/Suppliers"),
+    details: (id?: string) => request.get<Supplier>(`/Suppliers/${id}`),
+    create: (supplier: Supplier) => request.post<void>(`/Suppliers/`, supplier),
+    update: (supplier: Supplier) => request.put<void>(`/Suppliers/${supplier.supplierId}`,supplier),
+    delete: (id: string) => request.del<void>(`/Suppliers/${id}`)
 };
 
 const agent = {
-    Products
+    Products,
+    Categories,
+    Customers,
+    Orders,
+    Suppliers
 }
 
 export default agent;

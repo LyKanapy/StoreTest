@@ -15,12 +15,12 @@ namespace Application.Orders
 {
     public class List
     {
-        public class Query : IRequest <List<OrderDto>> 
+        public class Query : IRequest <List<OrderShortDto>> 
         {
 
         }
 
-        public class Handler : IRequestHandler<Query, List<OrderDto>>
+        public class Handler : IRequestHandler<Query, List<OrderShortDto>>
         {
             private readonly DataContext _context;
             private readonly IMapper _mapper;
@@ -30,7 +30,7 @@ namespace Application.Orders
                 _context = context;
             }
 
-            public async Task<List<OrderDto>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<List<OrderShortDto>> Handle(Query request, CancellationToken cancellationToken)
             {
                 // Manual query
                 // 
@@ -59,7 +59,7 @@ namespace Application.Orders
                 var orders = await _context.Orders
                     .Include(a => a.OrderItems)
                     .ThenInclude(b => b.Product)
-                    .ProjectTo<OrderDto>(_mapper.ConfigurationProvider)
+                    .ProjectTo<OrderShortDto>(_mapper.ConfigurationProvider)
                     .ToListAsync();
 
                 return orders;

@@ -6,10 +6,6 @@ import ProductGridItem from "./frontStore/ProductGriditem";
 
 export default function HomePage() {
 
-    interface Props {
-        product: Product;
-    }
-    
     const [products, setProducts] = useState<Product[]>([]);
 
     useEffect(() => {

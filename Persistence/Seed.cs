@@ -79,7 +79,8 @@ namespace Persistence
                         ProductSku = "Pro001",
                         ProductPrice = 1.99,
                         ProductQuantity = 5,
-                        Category = categories[0]
+                        Category = categories[0],
+                        Supplier = suppliers[1]
                     },
                 new Product
                     {
@@ -87,7 +88,8 @@ namespace Persistence
                         ProductSku = "Pro001",
                         ProductPrice = 2.99,
                         ProductQuantity = 10,
-                        Category = categories[1]
+                        Category = categories[1],
+                        Supplier = suppliers[0]
                     },
                 new Product
                     {
@@ -95,7 +97,8 @@ namespace Persistence
                         ProductSku = "Pro001",
                         ProductPrice = 3.99,
                         ProductQuantity = 1,
-                        Category = categories[0]
+                        Category = categories[0],
+                        Supplier = suppliers[0]
                     },
                 new Product
                     {
@@ -103,7 +106,8 @@ namespace Persistence
                         ProductSku = "Pro001",
                         ProductPrice = 4.99,
                         ProductQuantity = 5,
-                        Category = categories[1]
+                        Category = categories[1],
+                        Supplier = suppliers[0]
                     },
                 };
 

@@ -1,14 +1,14 @@
+import { Category } from "./category"
+
 export interface Product {
     productId: string
     productSku: string
     productName: string
     productPrice: number
     productQuantity: number
-    category: Category
+    categoryName: string
+    supplierName: string
   }
   
-  export interface Category {
-    categoryId: string
-    categoryName: string
-  }
+
   

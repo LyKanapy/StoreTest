@@ -10,5 +10,9 @@ namespace Application.Customers
         public Guid CustomerId { get; set; }
         public string CustomerName { get; set; }
         public string CustomerSurname { get; set; }
+        public string CustomerEmail { get; set; }
+        public string CustomerAdressCountry { get; set; }
+
+        
     }
 }

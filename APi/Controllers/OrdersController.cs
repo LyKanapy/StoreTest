@@ -20,7 +20,7 @@ namespace APi.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<OrderDto>>> GetOrders()
+        public async Task<ActionResult<List<OrderShortDto>>> GetOrders()
         {
             return await _mediator.Send(new List.Query());
         }

@@ -28,10 +28,9 @@ namespace APi.Controllers
         }
     
         [HttpGet("{id}")]
-        public async Task<ActionResult<CategoryDto>> GetCategory(Guid id)
+        public async Task<ActionResult<CategoryProductsDto>> GetCategory(Guid id)
         {
-            var result = await _mediator.Send(new Details.Query{CategoryId = id});
-            return result;
+            return await _mediator.Send(new Details.Query{CategoryId = id});
         }
 
         [HttpPut("{id}")]

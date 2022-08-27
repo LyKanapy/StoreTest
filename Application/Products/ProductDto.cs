@@ -12,9 +12,8 @@ namespace Application.Products
         public string ProductName { get; set; }
         public double ProductPrice { get; set; }
         public int ProductQuantity { get; set; }
-        public CategoryDto Category { get; set; }
-        public SupplierDto Supplier { get; set; }
-        // public ICollection<OrderItem> OrderItems { get; set; }
+        public string CategoryName { get; set; }
+        public string SupplierName { get; set; }
 
     }
 }
