@@ -10,8 +10,8 @@ export interface Customer {
     customerAdressCity: string,
     customerAdressStreet: string,
     customerAdressHouse: string,
-    orders: Order[]
+    orders?: Order[]
   }
-  
+
 
   

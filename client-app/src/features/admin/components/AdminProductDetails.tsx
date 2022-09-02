@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Button, Table } from "semantic-ui-react";
 import agent from "../../../app/api/agent";
 import { Product } from "../../../app/models/product";
+import DetailsTableRow from "../../snippets/DetailsTableRow";
 
 export default function AdminProductDetails() {
-  const [selectedProduct, setProduct] = useState<Product>();
+  const [selectedProduct, setProduct] = useState<Product | undefined>();
   let { id } = useParams();
 
   useEffect(() => {
@@ -15,27 +16,71 @@ export default function AdminProductDetails() {
     });
   }, []);
 
+  function handleEditProduct(product: Product) {
+    agent.Products.update(product);
+  }
+
+  function handleUpdateProduct(object: any) {
+    setProduct(object);
+  }
+
+  console.log(selectedProduct);
+
   return (
-    <Table celled striped key={selectedProduct?.productId}>
-      <Table.Header>
-        <Table.Row>
-          <Table.HeaderCell colSpan="3">
-            {selectedProduct?.productName}
-          </Table.HeaderCell>
-        </Table.Row>
-      </Table.Header>
-      <Table.Body>
-        <Table.Row>
-          <Table.Cell>Name</Table.Cell>
-          <Table.Cell >
-            {selectedProduct?.productName}
-            {/* <Button size="tiny" floated="right" positive compact>
-              Edit
-            </Button> */}
-          </Table.Cell>
-          <Table.Cell width="1" textAlign="center" style= {{cursor: "pointer"}}>Edit</Table.Cell>
-        </Table.Row>
-      </Table.Body>
-    </Table>
+    <>
+      <Table celled key={selectedProduct?.productId}>
+        <Table.Header>
+          <Table.Row>
+            <Table.HeaderCell colSpan="4">
+              {selectedProduct?.productName}
+            </Table.HeaderCell>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
+          <DetailsTableRow
+            object={selectedProduct}
+            data={selectedProduct?.productName}
+            dataKey="productName"
+            dataName="Name"
+            updateData={handleUpdateProduct}
+          />
+          <DetailsTableRow
+            object={selectedProduct}
+            data={selectedProduct?.productSku}
+            dataKey="productSku"
+            dataName="SKU"
+            updateData={handleUpdateProduct}
+          />
+          <DetailsTableRow
+            object={selectedProduct}
+            data={selectedProduct?.productQuantity}
+            dataKey="productQuantity"
+            dataName="Quantity"
+            updateData={handleUpdateProduct}
+          />
+          <DetailsTableRow
+            object={selectedProduct}
+            data={selectedProduct?.productPrice}
+            dataKey="productPrice"
+            dataName="Price"
+            updateData={handleUpdateProduct}
+          />
+          <DetailsTableRow
+            object={selectedProduct}
+            data={selectedProduct?.categoryName}
+            dataKey="categoryName"
+            dataName="Category"
+            updateData={handleUpdateProduct}
+          />
+        </Table.Body>
+      </Table>
+      <Button
+        floated="right"
+        positive
+        onClick={() => handleEditProduct(selectedProduct!)}
+      >
+        Save Changes
+      </Button>
+    </>
   );
 }
