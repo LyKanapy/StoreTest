@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Container, Icon } from "semantic-ui-react";
+import { Container} from "semantic-ui-react";
 import agent from "../../../app/api/agent";
 import { Product } from "../../../app/models/product";
 
@@ -15,7 +15,7 @@ export default function ProductPage () {
           let product = response;
           setProduct(product);
         });
-      }, []);
+      }, [id]);
 
     return (
             <Container>

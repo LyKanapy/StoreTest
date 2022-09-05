@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { Container, Dropdown, Header, Icon, Menu } from "semantic-ui-react";
+import { Container, Dropdown, Icon, Menu } from "semantic-ui-react";
 import agent from "../api/agent";
 import { Category } from "../models/category";
 

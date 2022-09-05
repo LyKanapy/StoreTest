@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Button, ButtonGroup, Card, Input, Segment } from "semantic-ui-react";
+import { Card} from "semantic-ui-react";
 import { Product } from "../../app/models/product";
 
     interface Props {

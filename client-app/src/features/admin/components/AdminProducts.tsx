@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
-import {useNavigate } from "react-router-dom";
-import {Button, Table } from "semantic-ui-react";
+import { useNavigate } from "react-router-dom";
+import { Table } from "semantic-ui-react";
 import agent from "../../../app/api/agent";
 import { Product } from "../../../app/models/product";
+import AdminMenu from "../AdminMenu";
+import AdminAddProductModal from "./products/AdminAddProductModal";
 
 export default function AdminProducts() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -18,9 +20,20 @@ export default function AdminProducts() {
     });
   }, []);
 
-  return (
+  function handleCreateProduct(product: Product) {
+    agent.Products.create(product).then(() => {
+      setProducts([...products, product])
+      navigate(`/admin/Products/${product.productId}`)
+    })
+}
+
+
+    return (
     <>
-      <Button positive compact style={{marginTop: 15}}floated="right">Add Product</Button>
+      <AdminMenu activeItem="products" />
+
+      <AdminAddProductModal handleCreateProduct={handleCreateProduct}/>
+
       <h1> Products </h1>
 
       <Table celled striped>
@@ -38,7 +51,7 @@ export default function AdminProducts() {
             <Table.Row
               key={product.productId}
               onClick={() => navigate(`/admin/Products/${product.productId}`)}
-              style= {{cursor: "pointer"}}
+              style={{ cursor: "pointer" }}
             >
               <Table.Cell>{product.productName}</Table.Cell>
               <Table.Cell>{product.productSku}</Table.Cell>

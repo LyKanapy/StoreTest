@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Input, Table } from "semantic-ui-react";
+import { Button, ButtonGroup, Input, Table } from "semantic-ui-react";
 
 interface Props {
   data: any;
@@ -14,7 +14,7 @@ export default function DetailsTableRow({
   dataName,
   object,
   dataKey,
-  updateData
+  updateData,
 }: Props) {
   const [fieldValue, setValue] = useState("");
   const [editMode, setEditMode] = useState(false);
@@ -22,67 +22,65 @@ export default function DetailsTableRow({
   return (
     <Table.Row>
       <Table.Cell width={4}>{dataName}</Table.Cell>
+
       <Table.Cell>
-        {!editMode && <>{data}</>}
-        {editMode && (
-          <Input
-            onChange={(e) => setValue(e.target.value)}
-            style={{ visibility: editMode ? "visible" : "hidden" }}
-            placeholder={data}
-          ></Input>
-        )}
-      </Table.Cell>
-      <>
+        {/* Edit mode OFF */}
         {!editMode && (
           <>
-            <Table.Cell
-              width="1"
-              textAlign="center"
-              style={{ cursor: "pointer" }}
+            <div style={{ display: "inline-block", padding: "0.45em 0" }}>
+              {data}
+            </div>
+            <Button
+              size="tiny"
+              positive
               onClick={() => setEditMode(!editMode)}
+              floated="right"
             >
               Edit
-            </Table.Cell>
+            </Button>
           </>
         )}
+        {/* Edit mode ON */}
         {editMode && (
           <>
-            <Table.Cell
-              width="1"
-              textAlign="center"
-              style={{
-                cursor: "pointer",
-                color: "white",
-                backgroundColor: "#21ba45",
-              }}
-              onClick={() => {
-                const obj: any = {...object};
-                Object.entries(object!).forEach(([key, value], index) => {
-                  if ((key = dataKey)) {
-                    value = fieldValue;
-                    obj[key] = value;
-                  } else {
-                    obj[key] = value;
-                  }
-                });
-                object=obj;
-                updateData(object)
-                setEditMode(!editMode);
-              }}
-            >
-              Save
-            </Table.Cell>
-            <Table.Cell
-              width="1"
-              textAlign="center"
-              style={{ cursor: "pointer" }}
-              onClick={() => setEditMode(!editMode)}
-            >
-              Cancel
-            </Table.Cell>
+            <Input
+              size="small"
+              onChange={(e) => setValue(e.target.value)}
+              style={{ visibility: editMode ? "visible" : "hidden" }}
+              placeholder={data}
+            ></Input>
+            <ButtonGroup floated="right" size="tiny">
+              <Button
+                positive
+                floated="right"
+                onClick={() => {
+                  const obj: any = { ...object };
+                  Object.entries(object!).forEach(([key, value], index) => {
+                    if ((key = dataKey)) {
+                      value = fieldValue;
+                      obj[key] = value;
+                    } else {
+                      obj[key] = value;
+                    }
+                  });
+                  object = obj;
+                  updateData(object);
+                  setEditMode(!editMode);
+                }}
+              >
+                Save
+              </Button>
+              <Button
+                negative
+                floated="right"
+                onClick={() => setEditMode(!editMode)}
+              >
+                Cancel
+              </Button>
+            </ButtonGroup>
           </>
         )}
-      </>
+      </Table.Cell>
     </Table.Row>
   );
 }

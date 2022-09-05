@@ -1,12 +1,14 @@
-
 import { format } from "date-fns";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Table } from "semantic-ui-react";
 import agent from "../../../app/api/agent";
 import { Order } from "../../../app/models/order";
+import AdminMenu from "../AdminMenu";
 
 export default function AdminProducts() {
   const [orders, serOrders] = useState<Order[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     agent.Orders.list().then((response) => {
@@ -20,6 +22,8 @@ export default function AdminProducts() {
 
   return (
     <>
+      <AdminMenu activeItem="orders" />
+
       <h1> Orders </h1>
       <Table celled striped>
         <Table.Header>
@@ -34,7 +38,11 @@ export default function AdminProducts() {
 
         <Table.Body>
           {orders.map((order: any) => (
-            <Table.Row key={order.orderId}>
+            <Table.Row
+              key={order.orderId}
+              onClick={() => navigate(`/admin/Orders/${order.orderId}`)}
+              style={{ cursor: "pointer" }}
+            >
               <Table.Cell>{order.orderNumber}</Table.Cell>
               <Table.Cell>
                 {order.customer.customerName} {order.customer.customerSurname}

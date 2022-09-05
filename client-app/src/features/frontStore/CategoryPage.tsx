@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Container, Grid, Icon } from "semantic-ui-react";
+import { Grid } from "semantic-ui-react";
 import agent from "../../app/api/agent";
 import { Category } from "../../app/models/category";
 import ProductGridItem from "./ProductGriditem";

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Table } from "semantic-ui-react";
 import agent from "../../../app/api/agent";
 import { Supplier } from "../../../app/models/supplier";
+import AdminMenu from "../AdminMenu";
 
 export default function AdminSuppliers() {
   const [suppliers, setSupplier] = useState<Supplier[]>([]);
@@ -20,6 +21,8 @@ export default function AdminSuppliers() {
 
   return (
     <>
+      <AdminMenu activeItem="suppliers" />
+
       <h1> Suppliers </h1>
       <Table celled striped>
         <Table.Header>
@@ -32,7 +35,9 @@ export default function AdminSuppliers() {
           {suppliers.map((supplier: any) => (
             <Table.Row
               key={supplier.supplierId}
-              onClick={() => navigate(`/admin/Products/${supplier.supplierId}`)}
+              onClick={() =>
+                navigate(`/admin/Suppliers/${supplier.supplierId}`)
+              }
               style={{ cursor: "pointer" }}
             >
               <Table.Cell>{supplier.companyName}</Table.Cell>

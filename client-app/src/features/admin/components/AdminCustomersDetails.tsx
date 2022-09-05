@@ -1,21 +1,22 @@
-import React, {useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { format } from "date-fns";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { Button, Table } from "semantic-ui-react";
 import agent from "../../../app/api/agent";
 import { Customer } from "../../../app/models/customer";
-import { Product } from "../../../app/models/product";
 import DetailsTableRow from "../../snippets/DetailsTableRow";
 
 export default function AdminCustomerDetails() {
   const [selectedCustomer, setCustomer] = useState<Customer | undefined>();
   let { id } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     agent.Customers.details(id).then((response) => {
       let customer = response;
       setCustomer(customer);
     });
-  }, []);
+  }, [id]);
 
   function handleEditCustomer(customer: Customer) {
     delete customer.orders;
@@ -34,7 +35,8 @@ export default function AdminCustomerDetails() {
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell colSpan="4">
-              {selectedCustomer?.customerName} {selectedCustomer?.customerSurname}
+              {selectedCustomer?.customerName}{" "}
+              {selectedCustomer?.customerSurname}
             </Table.HeaderCell>
           </Table.Row>
         </Table.Header>
@@ -97,6 +99,40 @@ export default function AdminCustomerDetails() {
           />
         </Table.Body>
       </Table>
+
+      <>
+        <h1>
+          {selectedCustomer?.customerName} {selectedCustomer?.customerSurname}{" "}
+          Orders
+        </h1>
+        <Table key="orders" celled striped>
+          <Table.Header>
+            <Table.Row>
+              <Table.HeaderCell>Number</Table.HeaderCell>
+              <Table.HeaderCell>Order Date</Table.HeaderCell>
+              <Table.HeaderCell>Order Status</Table.HeaderCell>
+              <Table.HeaderCell>Total</Table.HeaderCell>
+            </Table.Row>
+          </Table.Header>
+
+          <Table.Body>
+            {selectedCustomer?.orders?.map((order: any) => (
+              <Table.Row
+                key={order.orderId}
+                onClick={() => navigate(`/admin/Orders/${order.orderId}`)}
+                style={{ cursor: "pointer" }}
+              >
+                <Table.Cell>{order.orderNumber}</Table.Cell>
+                <Table.Cell>
+                  {format(new Date(order.orderDate), "yyyy-MM-dd")}
+                </Table.Cell>
+                <Table.Cell>{order.orderStatus}</Table.Cell>
+                <Table.Cell>{order.orderTotal}</Table.Cell>
+              </Table.Row>
+            ))}
+          </Table.Body>
+        </Table>
+      </>
       <Button
         floated="right"
         positive

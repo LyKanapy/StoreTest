@@ -1,4 +1,4 @@
-import React, {useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Button, Table } from "semantic-ui-react";
 import agent from "../../../app/api/agent";
@@ -14,7 +14,7 @@ export default function AdminProductDetails() {
       let product = response;
       setProduct(product);
     });
-  }, []);
+  }, [id]);
 
   function handleEditProduct(product: Product) {
     agent.Products.update(product);
@@ -23,8 +23,6 @@ export default function AdminProductDetails() {
   function handleUpdateProduct(object: any) {
     setProduct(object);
   }
-
-  console.log(selectedProduct);
 
   return (
     <>

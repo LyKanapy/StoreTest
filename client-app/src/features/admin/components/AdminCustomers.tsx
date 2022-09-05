@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Table } from "semantic-ui-react";
 import agent from "../../../app/api/agent";
 import { Customer } from "../../../app/models/customer";
-import { Product } from "../../../app/models/product";
+import AdminMenu from "../AdminMenu";
 
 export default function AdminProducts() {
   const [customers, setProducts] = useState<Customer[]>([]);
@@ -21,6 +21,8 @@ export default function AdminProducts() {
 
   return (
     <>
+      <AdminMenu activeItem="customers"/>
+
       <h1> Customers</h1>
       <Table celled striped>
         <Table.Header>
@@ -35,7 +37,9 @@ export default function AdminProducts() {
           {customers.map((customer: any) => (
             <Table.Row
               key={customer.customerId}
-              onClick={() => navigate(`/admin/Customers/${customer.customerId}`)}
+              onClick={() =>
+                navigate(`/admin/Customers/${customer.customerId}`)
+              }
               style={{ cursor: "pointer" }}
             >
               <Table.Cell>
