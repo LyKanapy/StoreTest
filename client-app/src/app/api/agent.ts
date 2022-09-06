@@ -13,6 +13,7 @@ const request = {
     get: <T>(url: string) => axios.get<T>(url).then(responseBody),
     post: <T>(url: string, body: {}) => axios.post<T>(url, body).then(responseBody),
     put: <T>(url: string, body: {}) => axios.put<T>(url, body).then(responseBody),
+    putId: <T>(url: string) => axios.put<T>(url).then(responseBody),
     del: <T>(url: string) => axios.delete<T>(url).then(responseBody)
 };
 
@@ -21,6 +22,7 @@ const Products = {
     details: (id?: string) => request.get<Product>(`/Products/${id}`),
     create: (product: Product) => request.post<void>(`/Products/`,product),
     update: (product: Product) => request.put<void>(`/Products/${product.productId}`,product),
+    updateCategory: (ids: string[]) => request.putId<void>(`/Products/${ids[0]}/${ids[1]}`),
     delete: (id: string) => request.del<void>(`/Products/${id}`)
 };
 

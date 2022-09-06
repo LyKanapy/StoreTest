@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Button, Table } from "semantic-ui-react";
 import agent from "../../../app/api/agent";
 import { Product } from "../../../app/models/product";
 import DetailsTableRow from "../../snippets/DetailsTableRow";
+import DetailsTableRowCategory from "../../snippets/DetailsTableRowCategory";
 
 export default function AdminProductDetails() {
   const [selectedProduct, setProduct] = useState<Product | undefined>();
+  const [selectedCategoryId, setSelectedCategoryId] = useState('');
   let { id } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     agent.Products.details(id).then((response) => {
@@ -20,8 +23,20 @@ export default function AdminProductDetails() {
     agent.Products.update(product);
   }
 
+  function handleDeleteProduct(id: string) {
+    agent.Products.delete(id);
+  }
+
   function handleUpdateProduct(object: any) {
     setProduct(object);
+  }
+
+  function handleSelectedCategoryId (id: string) {
+    setSelectedCategoryId(id);
+  }
+
+  function handleUpdateCategoryId (ids: string[]) {
+      agent.Products.updateCategory(ids)
   }
 
   return (
@@ -70,14 +85,36 @@ export default function AdminProductDetails() {
             dataName="Category"
             updateData={handleUpdateProduct}
           />
+          <DetailsTableRowCategory
+            object={selectedProduct}
+            data={selectedProduct?.categoryName}
+            dataKey="categoryName"
+            dataName="Category"
+            updateData={handleUpdateProduct}
+            updateCategory={handleSelectedCategoryId}
+          />
         </Table.Body>
       </Table>
       <Button
         floated="right"
         positive
-        onClick={() => handleEditProduct(selectedProduct!)}
+        onClick={() => {
+          handleEditProduct(selectedProduct!)
+          handleUpdateCategoryId([selectedProduct!.productId, selectedCategoryId])
+          console.log([selectedProduct!.productId, selectedCategoryId])
+        }}
       >
         Save Changes
+      </Button>
+      <Button
+        floated="right"
+        negative
+        onClick={() => {
+          handleDeleteProduct(selectedProduct!.productId, )
+          setTimeout(() => navigate(`/admin/Products`), 1000)  
+        }}
+      >
+        Delete Product
       </Button>
     </>
   );
