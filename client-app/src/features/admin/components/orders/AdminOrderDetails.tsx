@@ -1,9 +1,12 @@
 import React, {useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Button, Table } from "semantic-ui-react";
-import agent from "../../../app/api/agent";
-import { Order } from "../../../app/models/order";
-import DetailsTableRow from "../../snippets/DetailsTableRow";
+import agent from "../../../../app/api/agent";
+import { Order } from "../../../../app/models/order";
+import DetailsTableRow from "../../../components/DetailsTableRow";
+import EntityList from "../../../components/EntityList";
+import AdminOrderedProductsList from "./AdminOrderedProductsList";
+
 
 export default function AdminProductDetails() {
   const [selectedOrder, setOrder] = useState<Order | undefined>();
@@ -23,8 +26,6 @@ export default function AdminProductDetails() {
   function handleUpdateOrder(object: any) {
     setOrder(object);
   }
-
-  console.log(selectedOrder);
 
   return (
     <>
@@ -67,6 +68,12 @@ export default function AdminProductDetails() {
           />
         </Table.Body>
       </Table>
+     
+      <EntityList
+        title="Ordered Products"
+        component={<AdminOrderedProductsList orderedProducts={selectedOrder?.orderedProducts}/>}
+      />
+
       <Button
         floated="right"
         positive

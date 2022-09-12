@@ -2,9 +2,9 @@ import { format } from "date-fns";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button, Table } from "semantic-ui-react";
-import agent from "../../../app/api/agent";
-import { Customer } from "../../../app/models/customer";
-import DetailsTableRow from "../../snippets/DetailsTableRow";
+import agent from "../../../../app/api/agent";
+import { Customer } from "../../../../app/models/customer";
+import DetailsTableRow from "../../../components/DetailsTableRow";
 
 export default function AdminCustomerDetails() {
   const [selectedCustomer, setCustomer] = useState<Customer | undefined>();

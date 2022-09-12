@@ -14,7 +14,7 @@ namespace Domain
         public double OrderTotal { get; set; }
         public string OrderStatus { get; set; }
         public string OrderComment { get; set; }
-        public Guid CustomerId { get; set; }
+        public Guid? CustomerId { get; set; }
         public Customer Customer { get; set; }
         public ICollection<OrderItem> OrderItems { get; set; }
     }

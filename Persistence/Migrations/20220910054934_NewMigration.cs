@@ -60,7 +60,7 @@ namespace Persistence.Migrations
                     OrderTotal = table.Column<double>(type: "REAL", nullable: false),
                     OrderStatus = table.Column<string>(type: "TEXT", nullable: true),
                     OrderComment = table.Column<string>(type: "TEXT", nullable: true),
-                    CustomerId = table.Column<Guid>(type: "TEXT", nullable: false)
+                    CustomerId = table.Column<Guid>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {

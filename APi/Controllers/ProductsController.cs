@@ -58,5 +58,8 @@ namespace APi.Controllers
             return await _mediator.Send(new AddToCategory.Command{ ProductId = id, CategoryId = categoryId});
         }
 
+
+
+
     }
 }

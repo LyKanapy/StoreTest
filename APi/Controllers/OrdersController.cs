@@ -49,5 +49,11 @@ namespace APi.Controllers
         {
             return await _mediator.Send(new Delete.Command{OrderId = id});
         }
+        
+        [HttpPut("{id}/update")]
+        public async Task<ActionResult<Unit>> UpdateOrders(Guid id, OrderedProductsList orderedProductsList)
+        {
+            return await _mediator.Send(new UpdateOrderedProducts.Command{ OrderedProductsList = orderedProductsList, OrderId = id});
+        }
     }
 }

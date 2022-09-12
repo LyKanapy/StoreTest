@@ -1,30 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Table } from "semantic-ui-react";
-import agent from "../../../app/api/agent";
-import { Customer } from "../../../app/models/customer";
-import AdminMenu from "../AdminMenu";
+import { Customer } from "../../../../app/models/customer";
 
-export default function AdminProducts() {
-  const [customers, setProducts] = useState<Customer[]>([]);
-  const navigate = useNavigate();
+interface Props {
+    customers: Customer[]
+}
 
-  useEffect(() => {
-    agent.Customers.list().then((response) => {
-      let customers: Customer[] = [];
-      response.forEach((customer: any) => {
-        customers.push(customer);
-      });
-      setProducts(customers);
-    });
-  }, []);
 
-  return (
-    <>
-      <AdminMenu activeItem="customers"/>
+export default function AdminCustomersList({customers}: Props) {
 
-      <h1> Customers</h1>
-      <Table celled striped>
+    const navigate = useNavigate();
+
+
+    return (
+        <>
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell>Name</Table.HeaderCell>
@@ -50,7 +40,6 @@ export default function AdminProducts() {
             </Table.Row>
           ))}
         </Table.Body>
-      </Table>
-    </>
-  );
+        </>
+    )
 }

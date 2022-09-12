@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Application.Categories;
 using Application.Customers;
+using Application.OrderItems;
 using Application.Orders;
 using Application.Products;
 using AutoMapper;
@@ -17,7 +18,9 @@ namespace Application.Core
         {
             CreateMap<Category, CategoryDto>();
             CreateMap<CategoryDto, Category>();
+
             CreateMap<Category, CategoryProductsDto>();
+
             CreateMap<ProductDto, Product>();
             CreateMap<Product, ProductDto>()
                 .ForMember(d=>d.SupplierName, o => o.MapFrom(x=>x.Supplier.CompanyName))
@@ -25,15 +28,26 @@ namespace Application.Core
 
             CreateMap<Supplier, SupplierDto>();
             CreateMap<SupplierDto, Supplier>();
+
             CreateMap<OrderDto, Order>();
             CreateMap<Order, OrderShortDto>();
             
         // Mapping many to many relationship between orders and products (shows what products are in the order)
-            CreateMap<Product, OrderedProductDto>();
+
+            CreateMap<OrderItem, OrderedProductDto>()
+                .ForMember(d=>d.ProductId, o=> o.MapFrom(x=>x.Product.ProductId))
+                .ForMember(d=>d.ProductSku, o=> o.MapFrom(x=>x.Product.ProductSku))
+                .ForMember(d=>d.ProductName, o=> o.MapFrom(x=>x.Product.ProductName))
+                .ForMember(d=>d.ProductPrice, o=> o.MapFrom(x=>x.Product.ProductPrice))
+                ;
+                
             CreateMap<Order, OrderDto>()
-                .ForMember(d=>d.OrderedProducts, o => o.MapFrom(x=>x.OrderItems.Select(y=> y.Product)));
+                .ForMember(d=>d.OrderedProducts, o => o.MapFrom(x=>x.OrderItems))
+                ;
+
 
         // Mappings for customers
+        
             CreateMap<Customer, CustomerDto>();
             CreateMap<CustomerDto, Customer>();
             CreateMap<Customer, CustomerShortDto>();

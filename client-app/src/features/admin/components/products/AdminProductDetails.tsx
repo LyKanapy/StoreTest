@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button, Table } from "semantic-ui-react";
-import agent from "../../../app/api/agent";
-import { Product } from "../../../app/models/product";
-import DetailsTableRow from "../../snippets/DetailsTableRow";
-import DetailsTableRowCategory from "../../snippets/DetailsTableRowCategory";
+import agent from "../../../../app/api/agent";
+import { Product } from "../../../../app/models/product";
+import DetailsTableRow from "../../../components/DetailsTableRow";
+import DetailsTableRowCategory from "../../../components/DetailsTableRowCategory";
 
 export default function AdminProductDetails() {
   const [selectedProduct, setProduct] = useState<Product | undefined>();

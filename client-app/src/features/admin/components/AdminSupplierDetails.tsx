@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { Button, Table } from "semantic-ui-react";
 import agent from "../../../app/api/agent";
 import { Supplier } from "../../../app/models/supplier";
-import DetailsTableRow from "../../snippets/DetailsTableRow";
+import DetailsTableRow from "../../components/DetailsTableRow";
 
 export default function AdminProductDetails() {
   const [selectedSupplier, setSupplier] = useState<Supplier | undefined>();

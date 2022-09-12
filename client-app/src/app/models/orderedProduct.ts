@@ -3,5 +3,6 @@ export interface OrderedProduct {
     productSku: string,
     productName: string,
     productPrice: number,
-    productQuantity: number
+    unitPrice: number,
+    quantity: number
 }
