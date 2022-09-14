@@ -27,8 +27,6 @@ export default function AdminAddOrder({handleAddEntity}:Props) {
     handleAddEntity(product);
   }
 
-
-
   return (
     <Table celled>
 

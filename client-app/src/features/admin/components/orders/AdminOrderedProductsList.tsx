@@ -1,80 +1,59 @@
 import { ifError } from "assert";
 import React, { useEffect, useState } from "react";
-import {Button, Table } from "semantic-ui-react";
+import { Button, Dropdown, Input, Table } from "semantic-ui-react";
+import agent from "../../../../app/api/agent";
 import { OrderedProduct } from "../../../../app/models/orderedProduct";
+import { Product } from "../../../../app/models/product";
+import AddEntityModal from "../../../components/AddEntityModal";
+import AdminAddOrderedProduct from "./AdminAddOrderedProduct";
 import AdminOrderedProductItem from "./AdminOrderedProductItem";
 
 interface Props {
   orderedProducts: OrderedProduct[] | undefined;
+  handleProductToAdd (product: Product) : void;
+  handleRemoveProduct (id: string) : void;
+  handleAdd () : void;
+  productsData:  OrderedProduct[] | undefined
 }
 
-export default function AdminOrderedProductsList({ orderedProducts }: Props) {
-  const [productsToShow, setProductsToShow] = useState<
-    OrderedProduct[] | undefined
-  >(orderedProducts);
-
-  useEffect(() => {
-    setProductsToShow(orderedProducts)
-  }, [orderedProducts]);
-
-  // const [removeProduct, setRemoveProduct] = useState<OrderedProductData[]>([]);
-  // const [updateProduct, setUpdateProduct] = useState<OrderedProductData[]>([]);
-
-  // function handleAddProduct (id: string, quantity: number) {
-  //         let product = {
-  //             productId: id,
-  //             quantity: quantity
-  //         } as OrderedProductData
-  //         setAddProduct([...addProduct, product])
-  // }
-
-  // function handleRemoveProduct (id: string) {
-  //     let noId = true;
-  //     for (let i = 0; i < removeProduct.length; i++) {
-  //         if (id == removeProduct[i].productId ) {
-  //             noId = false;
-  //         }
-  //     }
-  //     if (noId) {
-  //         let product = {
-  //             productId: id
-  //         } as OrderedProductData
-  //         setRemoveProduct([...removeProduct, product])
-  //     }
-  // }
-
-  function handleRemoveProduct(id: string) {
-    setProductsToShow(productsToShow!.filter((i) => i.productId !== id));
-  }
+export default function AdminOrderedProductsList({ handleRemoveProduct, productsData, handleProductToAdd, handleAdd }: Props) {
 
   return (
     <>
-      <Table.Header>
+      <AddEntityModal
+        actionName="Add Product"
+        onAction={handleAdd}
+        component={
+          <AdminAddOrderedProduct handleAddEntity={handleProductToAdd} />
+        }
+      />
 
-        <Table.Row>
-          <Table.HeaderCell>Product      <Button 
-        onClick={() => console.log(productsToShow)}
-        ></Button></Table.HeaderCell>
-          <Table.HeaderCell>Sku</Table.HeaderCell>
-          <Table.HeaderCell>Ordered qnt.</Table.HeaderCell>
-          <Table.HeaderCell>Item Price, EUR</Table.HeaderCell>
-          <Table.HeaderCell>Total Price, EUR</Table.HeaderCell>
-          <Table.HeaderCell></Table.HeaderCell>
-        </Table.Row>
-      </Table.Header>
+      <h1>OrderedProducts</h1>
+      <Table>
+        <Table.Header>
+          <Table.Row>
+            <Table.HeaderCell>
+              Product
 
-      <Table.Body>
-        {productsToShow?.map((orderedProduct: OrderedProduct | undefined) => (
-            <AdminOrderedProductItem 
-            key={orderedProduct?.productId} 
-            handleRemoveProduct={handleRemoveProduct} 
-            orderedProduct={orderedProduct}
-            // updateProduct={handleUpdateProduct}
+            </Table.HeaderCell>
+            <Table.HeaderCell>Sku</Table.HeaderCell>
+            <Table.HeaderCell>Ordered qnt.</Table.HeaderCell>
+            <Table.HeaderCell>Item Price, EUR</Table.HeaderCell>
+            <Table.HeaderCell>Total Price, EUR</Table.HeaderCell>
+            <Table.HeaderCell></Table.HeaderCell>
+          </Table.Row>
+        </Table.Header>
+
+        <Table.Body>
+          {productsData?.map((orderedProduct: OrderedProduct | undefined) => (
+            <AdminOrderedProductItem
+              key={orderedProduct?.productId}
+              handleRemoveProduct={handleRemoveProduct}
+              orderedProduct={orderedProduct}
             />
-        ))}
-      </Table.Body>
-
-
+          ))}
+        </Table.Body>
+      </Table>
     </>
   );
 }
