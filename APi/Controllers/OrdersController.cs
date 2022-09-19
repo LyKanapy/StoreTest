@@ -55,5 +55,13 @@ namespace APi.Controllers
         {
             return await _mediator.Send(new UpdateOrderedProducts.Command{ OrderedProductsList = orderedProductsList, OrderId = id});
         }
+
+        [HttpPut("{orderId}/{customerId}")]
+        public async Task<ActionResult<Unit>> AddChangeCustomer(Guid orderId, Guid customerId)
+        {
+            return await _mediator.Send(new AddChangeCustomer.Command{ CustomerId = customerId, OrderId = orderId});
+        }
+
+
     }
 }

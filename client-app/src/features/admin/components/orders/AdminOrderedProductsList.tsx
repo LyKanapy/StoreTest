@@ -1,7 +1,4 @@
-import { ifError } from "assert";
-import React, { useEffect, useState } from "react";
-import { Button, Dropdown, Input, Table } from "semantic-ui-react";
-import agent from "../../../../app/api/agent";
+import { Table } from "semantic-ui-react";
 import { OrderedProduct } from "../../../../app/models/orderedProduct";
 import { Product } from "../../../../app/models/product";
 import AddEntityModal from "../../../components/AddEntityModal";

@@ -1,11 +1,13 @@
 export interface OrderedProductsActions {
     productsToRemove:  OrderedProductData [],
     productsToAdd:  OrderedProductData [],
-    ProductsToUpdate:  OrderedProductData []
+    productsToUpdate:  OrderedProductData []
 }
 
 export interface OrderedProductData{
     productId: string,
-    quantity: number
+    quantity: number,
+    unitPrice: number
+
 }
 

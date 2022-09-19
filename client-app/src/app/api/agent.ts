@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import { Category } from "../models/category";
 import { Customer } from "../models/customer";
-import { Order } from "../models/order";
+import { Order, OrderToUpdate } from "../models/order";
 import { OrderedProductsActions } from "../models/orderedProductsActions";
 import { Product } from "../models/product";
 import { Supplier } from "../models/supplier";
@@ -47,7 +47,8 @@ const Orders = {
     list: () => request.get<Order[]>("/Orders"),
     details: (id?: string) => request.get<Order>(`/Orders/${id}`),
     create: (order: Order) => request.post<void>(`/Orders/`, order),
-    update: (order: Order) => request.put<void>(`/Orders/${order.orderId}`,order),
+    update: (order: OrderToUpdate) => request.put<void>(`/Orders/${order.orderId}`,order),
+    updateCustomer: (ids: string[]) => request.putId<void>(`/Orders/${ids[0]}/${ids[1]}`),
     updateOrderedProducts: (id: string, actions: OrderedProductsActions) => request.put<void>(`/Orders/${id}/update`,actions),
     delete: (id: string) => request.del<void>(`/Orders/${id}`)
 };

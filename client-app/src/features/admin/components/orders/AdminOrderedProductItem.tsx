@@ -12,14 +12,17 @@ export default function AdminOrderedProductItem({
   handleRemoveProduct,
 }: Props) {
   const [editMode, setEditMode] = useState(false);
-  const [quantityValue, setQuantityValue] = useState<number>(orderedProduct!.quantity);
+  const [quantityValue, setQuantityValue] = useState<number>(
+    orderedProduct!.quantity
+  );
   const [product, setProduct] = useState<OrderedProduct>();
 
-  function updateQuantityValue (object: OrderedProduct) {
+  function updateOrderedProductValues(object: OrderedProduct) {
     let x: OrderedProduct = object;
     x.quantity = quantityValue;
-    setProduct(x)
-}
+    x.unitPrice = x.quantity * object.productPrice;
+    setProduct(x);
+  }
 
   return (
     <Table.Row>
@@ -71,7 +74,7 @@ export default function AdminOrderedProductItem({
               positive
               onClick={() => {
                 setEditMode(!editMode);
-                updateQuantityValue(orderedProduct!)
+                updateOrderedProductValues(orderedProduct!);
               }}
             >
               Save
