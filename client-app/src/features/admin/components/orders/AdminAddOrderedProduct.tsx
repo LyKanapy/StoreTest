@@ -1,26 +1,21 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
+import { observer } from "mobx-react-lite";
+import React, { useEffect, useState } from "react";
 import { Button, Dropdown } from "semantic-ui-react";
-import agent from "../../../../app/api/agent";
 import { Product } from "../../../../app/models/product";
+import { useStore } from "../../../../stores/store";
 
-interface Props {
-  handleAddEntity(object: any): void;
-}
-
-export default function ({ handleAddEntity }: Props) {
+export default observer ( function () {
   const [productOptions, setProductOptions] = useState<Product[]>([]);
   const [productId, setProductId] = useState("");
   const [products, setProducts] = useState<Product[]>([]);
 
+  const { productStore, orderStore } = useStore();
+
+  // Get Products list to add
   useEffect(() => {
-    // Get Products list to add
-    agent.Products.list().then((response) => {
-      let products: Product[] = [];
-      response.forEach((product: Product) => {
-        products.push(product);
-      });
+    productStore.loadListProducts().then(() => {
       let objects: any = [];
-      products.map((product) => {
+      productStore.products.forEach((product) => {
         let object = {
           key: product.productId,
           text: product.productName,
@@ -28,25 +23,34 @@ export default function ({ handleAddEntity }: Props) {
         };
         objects.push(object);
       });
+      setProducts(productStore.products);
       setProductOptions(objects);
-      setProducts(products);
     });
-},[]);
+  }, []);
 
-function handleSetProduct () {
-    console.log(products)
-    console.log(productId)
-    // console.log(products.find(x=> x.productId === productId))
-    handleAddEntity(products.find(x=> x.productId === productId))
-}
 
-function handleInputChange(
+  // Create object to add to ordered products list later
+
+  useEffect(() => {
+    let object = products.find((x) => x.productId === productId);
+    if (object) {
+      orderStore.setOrderedProductToAdd(object);
+    }
+    console.log(object);
+  }, [productId]);
+
+  function handleSetProduct() {
+    console.log(products);
+    console.log(productId);
+    console.log(products.find((x) => x.productId === productId));
+    // handleAddEntity(
+  }
+
+  function handleInputChange(
     event: React.SyntheticEvent<HTMLElement>,
     data: any
-    ) {
-        setProductId(data.value);
-        console.log(productId)
-
+  ) {
+    setProductId(data.value);
   }
 
   return (
@@ -58,12 +62,8 @@ function handleInputChange(
         options={productOptions}
         onChange={handleInputChange}
       />
-        <Button
-        onClick={handleSetProduct}
-        >
-        </Button>
-        <h5>{productId}</h5>
-
+      <Button onClick={handleSetProduct}></Button>
+      <h5>{productId}</h5>
     </>
   );
-}
+})

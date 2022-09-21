@@ -1,27 +1,29 @@
+import { observer } from "mobx-react-lite";
 import React, { useState } from "react";
 import { Button, ButtonGroup, Input, Table } from "semantic-ui-react";
 import { OrderedProduct } from "../../../../app/models/orderedProduct";
+import { useStore } from "../../../../stores/store";
 
 interface Props {
   orderedProduct: OrderedProduct | undefined;
-  handleRemoveProduct: (id: string) => void;
 }
 
-export default function AdminOrderedProductItem({
-  orderedProduct,
-  handleRemoveProduct,
+export default observer (function AdminOrderedProductItem({
+  orderedProduct
 }: Props) {
+
+  // MobX
+  const { orderStore } = useStore();
+  
   const [editMode, setEditMode] = useState(false);
   const [quantityValue, setQuantityValue] = useState<number>(
     orderedProduct!.quantity
   );
-  const [product, setProduct] = useState<OrderedProduct>();
 
   function updateOrderedProductValues(object: OrderedProduct) {
     let x: OrderedProduct = object;
     x.quantity = quantityValue;
     x.unitPrice = x.quantity * object.productPrice;
-    setProduct(x);
   }
 
   return (
@@ -36,7 +38,7 @@ export default function AdminOrderedProductItem({
             onChange={(e) => setQuantityValue(+e.target.value)}
             style={{ visibility: editMode ? "visible" : "hidden" }}
             placeholder={orderedProduct?.quantity}
-          ></Input>
+          ></Input> 
         )}
       </Table.Cell>
       <Table.Cell width={2} textAlign="right">
@@ -60,7 +62,8 @@ export default function AdminOrderedProductItem({
             <Button
               color="red"
               onClick={() => {
-                handleRemoveProduct(orderedProduct!.productId);
+                orderStore.removeOrderedProduct(orderedProduct!.productId);
+                console.log(orderedProduct!.productId)
               }}
             >
               Remove
@@ -92,4 +95,4 @@ export default function AdminOrderedProductItem({
       </Table.Cell>
     </Table.Row>
   );
-}
+})

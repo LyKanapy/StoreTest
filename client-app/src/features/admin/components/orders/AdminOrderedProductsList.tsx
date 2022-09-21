@@ -1,31 +1,26 @@
+import { observer } from "mobx-react-lite";
 import { Table } from "semantic-ui-react";
 import { OrderedProduct } from "../../../../app/models/orderedProduct";
 import { Product } from "../../../../app/models/product";
+import { useStore } from "../../../../stores/store";
 import AddEntityModal from "../../../components/AddEntityModal";
 import AdminAddOrderedProduct from "./AdminAddOrderedProduct";
 import AdminOrderedProductItem from "./AdminOrderedProductItem";
 
-interface Props {
-  orderedProducts: OrderedProduct[] | undefined;
-  handleProductToAdd (product: Product) : void;
-  handleRemoveProduct (id: string) : void;
-  handleAdd () : void;
-  productsData:  OrderedProduct[] | undefined
-}
-
-export default function AdminOrderedProductsList({ handleRemoveProduct, productsData, handleProductToAdd, handleAdd }: Props) {
+export default observer ( function AdminOrderedProductsList() {
+  
+    // MobX
+    const { orderStore } = useStore();
 
   return (
     <>
       <AddEntityModal
         actionName="Add Product"
-        onAction={handleAdd}
-        component={
-          <AdminAddOrderedProduct handleAddEntity={handleProductToAdd} />
-        }
+        onAction={orderStore.addOrderedProduct}
+        component={<AdminAddOrderedProduct/>}
       />
 
-      <h1>OrderedProducts</h1>
+      <h1>OrderedProducts </h1>
       <Table>
         <Table.Header>
           <Table.Row>
@@ -41,11 +36,11 @@ export default function AdminOrderedProductsList({ handleRemoveProduct, products
           </Table.Row>
         </Table.Header>
 
+
         <Table.Body>
-          {productsData?.map((orderedProduct: OrderedProduct | undefined) => (
+          {orderStore.selectedOrder?.orderedProducts?.map((orderedProduct: OrderedProduct | undefined) => (
             <AdminOrderedProductItem
               key={orderedProduct?.productId}
-              handleRemoveProduct={handleRemoveProduct}
               orderedProduct={orderedProduct}
             />
           ))}
@@ -53,4 +48,4 @@ export default function AdminOrderedProductsList({ handleRemoveProduct, products
       </Table>
     </>
   );
-}
+})

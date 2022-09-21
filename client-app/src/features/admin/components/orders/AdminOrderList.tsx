@@ -3,12 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { Table } from "semantic-ui-react";
 import { Order } from "../../../../app/models/order";
 import { format } from "date-fns";
+import { observer } from "mobx-react-lite";
 
 interface Props {
   orders: Order[];
 }
 
-export default function AdminOrderList({ orders }: Props) {
+export default observer ( function  AdminOrderList({ orders }: Props) {
   const navigate = useNavigate();
 
   return (
@@ -44,4 +45,4 @@ export default function AdminOrderList({ orders }: Props) {
       </Table.Body>
     </>
   );
-}
+})

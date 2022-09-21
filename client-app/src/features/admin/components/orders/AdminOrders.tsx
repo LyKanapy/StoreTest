@@ -1,15 +1,18 @@
+import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import agent from "../../../../app/api/agent";
 import { Order } from "../../../../app/models/order";
+import { useStore } from "../../../../stores/store";
 import AddEntityModal from "../../../components/AddEntityModal";
 import EntityList from "../../../components/EntityList";
 import AdminMenu from "../../AdminMenu";
 import AdminAddOrder from "./AdminAddOrder";
 import AdminOrderList from "./AdminOrderList";
 
-export default function AdminProducts() {
-  const [orders, setOrders] = useState<Order[]>([]);
+export default observer(function AdminProducts() {
+  // MobX
+  const { orderStore } = useStore();
+
   const [orderToAdd, setOrderToAdd] = useState<Order>();
   const navigate = useNavigate();
 
@@ -17,24 +20,9 @@ export default function AdminProducts() {
   // Create orders list
 
   useEffect(() => {
-    agent.Orders.list().then((response) => {
-      let orders: Order[] = [];
-      response.forEach((order: any) => {
-        orders.push(order);
-      });
-      setOrders(orders);
-      console.log(orders);
-    });
+    orderStore.loadListOrders();
+    orderStore.listEdited = false;
   }, []);
-
-  // Add order to database
-
-  function handleCreateOrder(order: Order) {
-    agent.Orders.create(order).then(() => {
-      setOrders([...orders, order]);
-      navigate(`/admin/Orders/${order.orderId}`);
-    });
-  }
 
   // Other functions
 
@@ -43,7 +31,9 @@ export default function AdminProducts() {
   }
 
   function handleAdd() {
-    handleCreateOrder(orderToAdd!);
+    orderStore
+      .createOrder(orderToAdd!)
+      .then(() => navigate(`/admin/Orders/${orderToAdd!.orderId}`));
   }
 
   return (
@@ -57,8 +47,8 @@ export default function AdminProducts() {
       />
       <EntityList
         title="Orders"
-        component={<AdminOrderList orders={orders} />}
+        component={<AdminOrderList orders={orderStore.orders} />}
       />
     </>
   );
-}
+});

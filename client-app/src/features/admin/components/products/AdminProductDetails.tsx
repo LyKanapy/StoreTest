@@ -1,107 +1,70 @@
-import React, { useEffect, useState } from "react";
+import { observer } from "mobx-react-lite";
+import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button, Table } from "semantic-ui-react";
-import agent from "../../../../app/api/agent";
-import { Product } from "../../../../app/models/product";
+import { useStore } from "../../../../stores/store";
 import DetailsTableRow from "../../../components/DetailsTableRow";
 import DetailsTableRowCategory from "../../../components/DetailsTableRowCategory";
 
-export default function AdminProductDetails() {
-  const [selectedProduct, setProduct] = useState<Product | undefined>();
-  const [selectedCategoryId, setSelectedCategoryId] = useState('');
+export default observer(function AdminProductDetails() {
+  // MobX
+  const { productStore } = useStore();
+
   let { id } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
-    agent.Products.details(id).then((response) => {
-      let product = response;
-      setProduct(product);
-    });
-  }, [id]);
-
-  function handleEditProduct(product: Product) {
-    agent.Products.update(product);
-  }
-
-  function handleDeleteProduct(id: string) {
-    agent.Products.delete(id);
-  }
-
-  function handleUpdateProduct(object: any) {
-    setProduct(object);
-  }
-
-  function handleSelectedCategoryId (id: string) {
-    setSelectedCategoryId(id);
-  }
-
-  function handleUpdateCategoryId (ids: string[]) {
-      agent.Products.updateCategory(ids)
-  }
+    productStore.loadProduct(id!);
+  }, []);
 
   return (
     <>
-      <Table celled key={selectedProduct?.productId}>
+      <Table celled key={productStore.selectedProduct?.productId}>
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell colSpan="4">
-              {selectedProduct?.productName}
+              {productStore.selectedProduct?.productName}
             </Table.HeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>
           <DetailsTableRow
-            object={selectedProduct}
-            data={selectedProduct?.productName}
+            object={productStore.selectedProduct}
+            data={productStore.selectedProduct?.productName}
             dataKey="productName"
             dataName="Name"
-            updateData={handleUpdateProduct}
+            updateData={productStore.updateProductObject}
           />
           <DetailsTableRow
-            object={selectedProduct}
-            data={selectedProduct?.productSku}
+            object={productStore.selectedProduct}
+            data={productStore.selectedProduct?.productSku}
             dataKey="productSku"
             dataName="SKU"
-            updateData={handleUpdateProduct}
+            updateData={productStore.updateProductObject}
           />
           <DetailsTableRow
-            object={selectedProduct}
-            data={selectedProduct?.productQuantity}
+            object={productStore.selectedProduct}
+            data={productStore.selectedProduct?.productQuantity}
             dataKey="productQuantity"
             dataName="Quantity"
-            updateData={handleUpdateProduct}
+            updateData={productStore.updateProductObject}
           />
           <DetailsTableRow
-            object={selectedProduct}
-            data={selectedProduct?.productPrice}
+            object={productStore.selectedProduct}
+            data={productStore.selectedProduct?.productPrice}
             dataKey="productPrice"
             dataName="Price"
-            updateData={handleUpdateProduct}
+            updateData={productStore.updateProductObject}
           />
-          <DetailsTableRow
-            object={selectedProduct}
-            data={selectedProduct?.categoryName}
-            dataKey="categoryName"
-            dataName="Category"
-            updateData={handleUpdateProduct}
-          />
-          <DetailsTableRowCategory
-            object={selectedProduct}
-            data={selectedProduct?.categoryName}
-            dataKey="categoryName"
-            dataName="Category"
-            updateData={handleUpdateProduct}
-            updateCategory={handleSelectedCategoryId}
-          />
+          <DetailsTableRowCategory/>
         </Table.Body>
       </Table>
       <Button
         floated="right"
         positive
         onClick={() => {
-          handleEditProduct(selectedProduct!)
-          handleUpdateCategoryId([selectedProduct!.productId, selectedCategoryId])
-          console.log([selectedProduct!.productId, selectedCategoryId])
+          productStore.editProduct(productStore.selectedProduct!);
+          productStore.updateProductCategory();
         }}
       >
         Save Changes
@@ -110,12 +73,12 @@ export default function AdminProductDetails() {
         floated="right"
         negative
         onClick={() => {
-          handleDeleteProduct(selectedProduct!.productId, )
-          setTimeout(() => navigate(`/admin/Products`), 1000)  
+          productStore.deleteProduct(productStore.selectedProduct!.productId);
+          setTimeout(() => navigate(`/admin/Products`), 1000);
         }}
       >
         Delete Product
       </Button>
     </>
   );
-}
+});

@@ -1,3 +1,4 @@
+import { observer } from "mobx-react-lite";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Table } from "semantic-ui-react";
@@ -8,7 +9,7 @@ interface Props {
 }
 
 
-export default function AdminProductsList({products}: Props) {
+export default observer (function AdminProductsList({products}: Props) {
 
     const navigate = useNavigate();
 
@@ -40,4 +41,4 @@ export default function AdminProductsList({products}: Props) {
             </Table.Body>
         </>
     )
-}
+})

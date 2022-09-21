@@ -1,36 +1,19 @@
-import React, { useEffect, useState } from "react";
+import { observer } from "mobx-react-lite";
+import React, { useState } from "react";
 import { Button, ButtonGroup, Dropdown, Table } from "semantic-ui-react";
-import agent from "../../app/api/agent";
-import { Customer } from "../../app/models/customer";
-import { Order } from "../../app/models/order";
+import { useStore } from "../../stores/store";
 
-interface Props {
-  order: Order;
-  updateData: (order: Order) => void;
-  updateCustomer: (id: string) => void;
-}
+export default observer ( function DetailsTableRowCustomer() {
 
-export default function DetailsTableRowCustomer({
-  order,
-  updateData,
-  updateCustomer,
-}: Props) {
+  // MobX
+  const {customerStore, orderStore} =useStore();
+
   const [customerId, setId] = useState("");
   const [editMode, setEditMode] = useState(false);
-  const [customers, setCustomer] = useState<Customer[]>([]);
+
   let customersDropdown: any = [];
 
-  function getCustomersList() {
-    agent.Customers.list().then((response) => {
-      let customers: Customer[] = [];
-      response.forEach((customer: any) => {
-        customers.push(customer);
-      });
-      setCustomer(customers);
-    });
-  }
-
-  customers.map((customer) => {
+  customerStore.customers.map((customer) => {
     let object = { key: "", value: "", text: "" };
     object.key = customer.customerId;
     object.value = customer.customerId;
@@ -40,9 +23,13 @@ export default function DetailsTableRowCustomer({
 
   function handleOnChange(e: any, data: any) {
     setId(data.value);
-    order.customer.customerName = customers.find(x=>x.customerId===data.value)!.customerName;
-    order.customer.customerSurname = customers.find(x=>x.customerId===data.value)!.customerSurname;
-    console.log(data.value)
+  }
+
+  function renderNewCustomerValue() {
+    let name = customerStore.customers.find(x=> x.customerId === customerId)!.customerName 
+    let surname = customerStore.customers.find(x=> x.customerId === customerId)!.customerSurname;
+    orderStore.selectedOrder!.customer.customerName=name;
+    orderStore.selectedOrder!.customer.customerSurname=surname;
   }
 
   return (
@@ -54,14 +41,14 @@ export default function DetailsTableRowCustomer({
         {!editMode && (
           <>
             <div style={{ display: "inline-block", padding: "0.45em 0" }}>
-              {order?.customer.customerName} {order?.customer.customerSurname}
+              {orderStore.selectedOrder?.customer.customerName} {orderStore.selectedOrder?.customer.customerSurname}
             </div>
             <Button
               size="tiny"
               positive
               onClick={() => {
                 setEditMode(!editMode);
-                getCustomersList();
+                customerStore.loadListCustomers();
               }}
               floated="right"
             >
@@ -73,7 +60,7 @@ export default function DetailsTableRowCustomer({
         {editMode && (
           <>
             <Dropdown
-              placeholder={`${order?.customer.customerName} ${order?.customer.customerSurname}`}
+              placeholder={`Select Customer`}
               search
               selection
               options={customersDropdown}
@@ -84,9 +71,9 @@ export default function DetailsTableRowCustomer({
                 positive
                 floated="right"
                 onClick={() => {
-                  updateData(order);
+                  orderStore.idChangeCustomerTo(customerId);
                   setEditMode(!editMode);
-                  updateCustomer(customerId);
+                  renderNewCustomerValue();
                 }}
               >
                 Save
@@ -104,4 +91,4 @@ export default function DetailsTableRowCustomer({
       </Table.Cell>
     </Table.Row>
   );
-}
+})

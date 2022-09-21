@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useState } from "react";
-import { Input, Table } from "semantic-ui-react";
+import { Table } from "semantic-ui-react";
 import { v4 as uuid } from "uuid";
 import { Order } from "../../../../app/models/order";
 
