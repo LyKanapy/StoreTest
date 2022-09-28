@@ -16,8 +16,8 @@ export interface Order {
   export interface OrderToUpdate {
     orderId: string,
     orderNumber: string,
-    orderDate: Date,
     orderStatus: string,
     orderComment?: string,
-    orderTotal: number
+    orderTotal: number,
+    orderDate: Date
   }

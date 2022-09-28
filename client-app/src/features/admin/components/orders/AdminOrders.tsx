@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Order } from "../../../../app/models/order";
+import { Order, OrderToUpdate } from "../../../../app/models/order";
 import { useStore } from "../../../../stores/store";
 import AddEntityModal from "../../../components/AddEntityModal";
 import EntityList from "../../../components/EntityList";
@@ -13,7 +13,7 @@ export default observer(function AdminProducts() {
   // MobX
   const { orderStore } = useStore();
 
-  const [orderToAdd, setOrderToAdd] = useState<Order>();
+  const [orderToAdd, setOrderToAdd] = useState<OrderToUpdate>();
   const navigate = useNavigate();
 
   // Database interactions
@@ -33,6 +33,7 @@ export default observer(function AdminProducts() {
   function handleAdd() {
     orderStore
       .createOrder(orderToAdd!)
+      .then(() => orderStore.updateSetOrderCustomer(orderToAdd!.orderId))
       .then(() => navigate(`/admin/Orders/${orderToAdd!.orderId}`));
   }
 
@@ -41,7 +42,7 @@ export default observer(function AdminProducts() {
       <AdminMenu activeItem="orders" />
 
       <AddEntityModal
-        actionName="Add Order"
+        actionName="Order"
         onAction={handleAdd}
         component={<AdminAddOrder handleAddEntity={handleOrderToAdd} />}
       />

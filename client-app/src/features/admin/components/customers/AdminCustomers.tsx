@@ -54,7 +54,7 @@ export default function AdminProducts() {
       <AdminMenu activeItem="customers"/>
 
       <AddEntityModal
-        actionName="Add Customer"
+        actionName="Customer"
         onAction={handleAdd}
         component={<AdminAddCustomer handleAddEntity={handleCustomerToAdd}/>}
       />

@@ -56,7 +56,7 @@ namespace Persistence.Migrations
                 {
                     OrderId = table.Column<Guid>(type: "TEXT", nullable: false),
                     OrderNumber = table.Column<string>(type: "TEXT", nullable: true),
-                    Orderdate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    OrderDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     OrderTotal = table.Column<double>(type: "REAL", nullable: false),
                     OrderStatus = table.Column<string>(type: "TEXT", nullable: true),
                     OrderComment = table.Column<string>(type: "TEXT", nullable: true),

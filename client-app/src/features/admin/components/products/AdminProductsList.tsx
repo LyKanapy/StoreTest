@@ -8,7 +8,6 @@ interface Props {
     products: Product[]
 }
 
-
 export default observer (function AdminProductsList({products}: Props) {
 
     const navigate = useNavigate();

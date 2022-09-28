@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, ButtonGroup, Input, Table } from "semantic-ui-react";
+import { Button, ButtonGroup, Input, Table, TextArea } from "semantic-ui-react";
 
 interface Props {
   data: any;

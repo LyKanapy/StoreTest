@@ -77,6 +77,9 @@ namespace Persistence.Migrations
                     b.Property<string>("OrderComment")
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("OrderNumber")
                         .HasColumnType("TEXT");
 
@@ -85,9 +88,6 @@ namespace Persistence.Migrations
 
                     b.Property<double>("OrderTotal")
                         .HasColumnType("REAL");
-
-                    b.Property<DateTime>("Orderdate")
-                        .HasColumnType("TEXT");
 
                     b.HasKey("OrderId");
 

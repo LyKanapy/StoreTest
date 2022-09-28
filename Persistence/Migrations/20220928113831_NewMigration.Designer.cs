@@ -9,7 +9,7 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220910054934_NewMigration")]
+    [Migration("20220928113831_NewMigration")]
     partial class NewMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -79,6 +79,9 @@ namespace Persistence.Migrations
                     b.Property<string>("OrderComment")
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("OrderNumber")
                         .HasColumnType("TEXT");
 
@@ -87,9 +90,6 @@ namespace Persistence.Migrations
 
                     b.Property<double>("OrderTotal")
                         .HasColumnType("REAL");
-
-                    b.Property<DateTime>("Orderdate")
-                        .HasColumnType("TEXT");
 
                     b.HasKey("OrderId");
 

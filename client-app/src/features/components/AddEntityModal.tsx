@@ -17,11 +17,11 @@ export default function AddEntityModal({ actionName, onAction, component }: Prop
       open={open}
       trigger={
         <Button positive compact style={{ marginTop: 15 }} floated="right">
-          {actionName}
+          Add {actionName}
         </Button>
       }
     >
-      <Modal.Header>Add Product</Modal.Header>
+      <Modal.Header>Add {actionName}</Modal.Header>
       <Modal.Content>
         <Modal.Description>
             {component}
@@ -38,7 +38,7 @@ export default function AddEntityModal({ actionName, onAction, component }: Prop
           }}
           positive
         >
-          {actionName}
+          Add {actionName}
         </Button>
       </Modal.Actions>
     </Modal>

@@ -1,51 +1,32 @@
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { Button, Table } from "semantic-ui-react";
-import agent from "../../../../app/api/agent";
-import { Order } from "../../../../app/models/order";
-import { OrderedProduct } from "../../../../app/models/orderedProduct";
+import { useNavigate, useParams } from "react-router-dom";
+import { Button, Header, Segment, Table } from "semantic-ui-react";
 import { useStore } from "../../../../stores/store";
 import DetailsTableRow from "../../../components/DetailsTableRow";
 import DetailsTableRowCustomer from "../../../components/DetailsTableRowCustomer";
+import DetailsTableRowStatic from "../../../components/DetailsTableRowStatic";
 import AdminOrderedProductsList from "./AdminOrderedProductsList";
+import { format } from "date-fns";
 
-export default observer (function AdminProductDetails() {
-
+export default observer(function AdminOrderDetails() {
   // MobX
   const { orderStore } = useStore();
 
-  const [selectedOrder, setOrder] = useState<Order | undefined>();
-  const [customerToChange, setCustomerToChange] = useState<string[]>();
+  const [date, setDate] = useState("");
+  const navigate = useNavigate();
 
   let { id } = useParams();
 
   useEffect(() => {
     orderStore.loadOrder(id!).then(() => {
       orderStore.setOriginalOrderedProducts();
-    })
-  }, []);
-
-   // Save parameter to change customer to which this order is set to
-
-  function handleSetUpdateCustomer(id: string) {
-    let ids: string[] = [];
-    ids.push(selectedOrder!.orderId);
-    ids.push(id);
-    setCustomerToChange(ids);
-  }
-
-  // Change customer to which this order is set to
-
-  function handleUpdateCustomer() {
-    if (customerToChange === undefined) {
-      return;
-    }
-    if (customerToChange[0] === customerToChange[1]) {
-      return;
-    }
-    agent.Orders.updateCustomer(customerToChange);
-  }
+      setDate(
+        format(new Date(orderStore.selectedOrder!.orderDate), "yyyy-MM-dd")
+      );
+      console.log(orderStore.selectedOrder?.orderedProducts);
+    });
+  }, [id]);
 
   return (
     <>
@@ -65,6 +46,7 @@ export default observer (function AdminProductDetails() {
             dataName="Order Number"
             updateData={orderStore.setOrderObject}
           />
+          <DetailsTableRowCustomer />
           <DetailsTableRow
             object={orderStore.selectedOrder}
             data={orderStore.selectedOrder?.orderStatus}
@@ -74,29 +56,28 @@ export default observer (function AdminProductDetails() {
           />
           <DetailsTableRow
             object={orderStore.selectedOrder}
-            data={orderStore.selectedOrder?.orderTotal}
-            dataKey="orderTotal"
-            dataName="Total"
+            data={orderStore.selectedOrder?.orderComment}
+            dataKey="orderComment"
+            dataName="Comment"
             updateData={orderStore.setOrderObject}
           />
-          <DetailsTableRow
-            object={orderStore.selectedOrder}
-            data={orderStore.selectedOrder?.orderDate}
-            dataKey="orderDate"
-            dataName="Order Date"
-            updateData={orderStore.setOrderObject}
-          />
-          <DetailsTableRowCustomer/>
+          <DetailsTableRowStatic data={date} dataName="Order Date" />
         </Table.Body>
       </Table>
 
-      <AdminOrderedProductsList/>
+      <AdminOrderedProductsList />
+
+      <Segment.Group horizontal>
+        <Segment textAlign="right">
+          <h1>{orderStore.totalPrice} €</h1>
+        </Segment>
+      </Segment.Group>
 
       <Button
         floated="right"
         positive
         onClick={() => {
-          orderStore.updateOrderCustomer();
+          orderStore.updateSetOrderCustomer(orderStore.selectedOrder!.orderId);
           orderStore.editOrderedProducts();
           orderStore.editOrder();
           window.location.reload();
@@ -104,9 +85,16 @@ export default observer (function AdminProductDetails() {
       >
         Save Changes
       </Button>
+      <Button
+        floated="right"
+        negative
+        onClick={() => {
+          orderStore.deleteOrder(orderStore.selectedOrder!.orderId);
+          setTimeout(() => navigate(`/admin/Orders`), 1000);
+        }}
+      >
+        Delete Product
+      </Button>
     </>
   );
-})
-
-
-
+});

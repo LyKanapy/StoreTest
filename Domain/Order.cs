@@ -10,7 +10,7 @@ namespace Domain
         public Guid OrderId { get; set; }
 
         public string OrderNumber { get; set; }
-        public DateTime Orderdate { get; set; }
+        public DateTime OrderDate { get; set; }
         public double OrderTotal { get; set; }
         public string OrderStatus { get; set; }
         public string OrderComment { get; set; }

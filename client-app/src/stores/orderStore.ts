@@ -7,16 +7,17 @@ import {
   OrderedProductsActions,
 } from "../app/models/orderedProductsActions";
 import { Product } from "../app/models/product";
+import { format } from "date-fns";
 
 export default class OrderStore {
   orders: Order[] = [];
   orderedProducts: OrderedProduct[] | undefined = [];
   orderedProductsOriginal: OrderedProduct[] | undefined = [];
   orderedProductToAdd: OrderedProduct | undefined;
-  changeCustomerTo: string = ""
+  changeCustomerTo: string = "";
   totalPrice: number = 0;
-  selectedOrder: Order | null = null;
-  orderToAdd: Order | null = null;
+  selectedOrder: Order | undefined = undefined;
+  orderToAdd: Order | undefined = undefined;
   // Product list has been edited:
   listEdited: boolean = true;
 
@@ -24,6 +25,13 @@ export default class OrderStore {
     makeAutoObservable(this);
   }
 
+  setTotalPrice = () => {
+    console.log(this.selectedOrder?.orderedProducts);
+    this.totalPrice = 0;
+    this.selectedOrder?.orderedProducts.forEach((product) => {
+      this.totalPrice = this.totalPrice + product.unitPrice;
+    });
+  };
   // --- DATABASE INTERACTIONS ---
   // List (Get)
 
@@ -51,6 +59,7 @@ export default class OrderStore {
       const order = await agent.Orders.details(id);
       runInAction(() => {
         this.selectedOrder = order;
+        this.setTotalPrice();
       });
     } catch (error) {
       console.log(error);
@@ -59,7 +68,7 @@ export default class OrderStore {
 
   // Create (Post)
 
-  createOrder = async (order: Order) => {
+  createOrder = async (order: OrderToUpdate) => {
     try {
       await agent.Orders.create(order);
       runInAction(() => {
@@ -82,8 +91,11 @@ export default class OrderStore {
           orderStatus: this.selectedOrder.orderStatus,
           orderComment: this.selectedOrder.orderComment,
           orderTotal: this.totalPrice,
+          orderDate: this.selectedOrder.orderDate,
         } as OrderToUpdate;
-  
+
+        console.log("Order update object API");
+        console.log(orderToUpdate);
         agent.Orders.update(orderToUpdate);
       }
     } catch (error) {
@@ -121,8 +133,8 @@ export default class OrderStore {
 
     let arrOriginal: OrderedProductData[] = [];
     if (arrOriginal) arrOriginal = this.orderedProductsOriginal!;
-    console.log(arrOriginal)
-    console.log(this.orderedProductsOriginal)
+    console.log(arrOriginal);
+    console.log(this.orderedProductsOriginal);
 
     let arrEdited = this.selectedOrder!.orderedProducts;
 
@@ -150,7 +162,6 @@ export default class OrderStore {
 
     // Total order price calculation method
 
-    
     productsToAdd.forEach((product) => {
       this.totalPrice = this.totalPrice + product.unitPrice;
     });
@@ -158,7 +169,10 @@ export default class OrderStore {
       this.totalPrice = this.totalPrice + product.unitPrice;
     });
 
-    agent.Orders.updateOrderedProducts(this.selectedOrder!.orderId, productsAction);
+    agent.Orders.updateOrderedProducts(
+      this.selectedOrder!.orderId,
+      productsAction
+    );
 
     console.log("Add");
     console.log(arrToAdd);
@@ -170,22 +184,23 @@ export default class OrderStore {
     console.log(productsAction);
     console.log("Total");
     console.log(this.totalPrice);
-
   };
 
   // Change order customer
 
-  updateOrderCustomer = async () => {
+  updateSetOrderCustomer = async (id: string) => {
     try {
-      await agent.Orders.updateCustomer([this.selectedOrder!.orderId, this.changeCustomerTo]);
-    } catch (error) {
-      
-    }
-  }
+      if (this.changeCustomerTo) {
+        await agent.Orders.updateCustomer([id, this.changeCustomerTo]);
+        console.log("Updating customer API:");
+        console.log([this.selectedOrder!.orderId, this.changeCustomerTo]);
+      }
+    } catch (error) {}
+  };
 
   idChangeCustomerTo = (id: string) => {
-    this.changeCustomerTo = id
-  }
+    this.changeCustomerTo = id;
+  };
 
   // Remove (Delete)
 
@@ -197,11 +212,6 @@ export default class OrderStore {
       console.log(error);
     }
   };
-
-
-
-
-
 
   //  --- Ordered Products ---
 
@@ -216,6 +226,7 @@ export default class OrderStore {
   removeOrderedProduct = (id: string) => {
     this.selectedOrder!.orderedProducts =
       this.selectedOrder!.orderedProducts.filter((i) => i.productId !== id);
+    this.setTotalPrice();
   };
 
   // Creates ordered product object to use later when addOrderedProduct function will be called
@@ -237,6 +248,7 @@ export default class OrderStore {
     if (this.orderedProductToAdd) {
       this.selectedOrder!.orderedProducts = [...x, this.orderedProductToAdd];
     }
+    this.setTotalPrice();
   };
 
   // Set selected order in client view

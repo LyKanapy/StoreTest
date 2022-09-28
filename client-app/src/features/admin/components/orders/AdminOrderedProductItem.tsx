@@ -8,13 +8,12 @@ interface Props {
   orderedProduct: OrderedProduct | undefined;
 }
 
-export default observer (function AdminOrderedProductItem({
-  orderedProduct
+export default observer(function AdminOrderedProductItem({
+  orderedProduct,
 }: Props) {
-
   // MobX
   const { orderStore } = useStore();
-  
+
   const [editMode, setEditMode] = useState(false);
   const [quantityValue, setQuantityValue] = useState<number>(
     orderedProduct!.quantity
@@ -38,7 +37,7 @@ export default observer (function AdminOrderedProductItem({
             onChange={(e) => setQuantityValue(+e.target.value)}
             style={{ visibility: editMode ? "visible" : "hidden" }}
             placeholder={orderedProduct?.quantity}
-          ></Input> 
+          ></Input>
         )}
       </Table.Cell>
       <Table.Cell width={2} textAlign="right">
@@ -63,7 +62,7 @@ export default observer (function AdminOrderedProductItem({
               color="red"
               onClick={() => {
                 orderStore.removeOrderedProduct(orderedProduct!.productId);
-                console.log(orderedProduct!.productId)
+                console.log(orderedProduct!.productId);
               }}
             >
               Remove
@@ -78,6 +77,7 @@ export default observer (function AdminOrderedProductItem({
               onClick={() => {
                 setEditMode(!editMode);
                 updateOrderedProductValues(orderedProduct!);
+                orderStore.setTotalPrice();
               }}
             >
               Save
@@ -95,4 +95,4 @@ export default observer (function AdminOrderedProductItem({
       </Table.Cell>
     </Table.Row>
   );
-})
+});

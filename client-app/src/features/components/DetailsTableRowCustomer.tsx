@@ -1,12 +1,12 @@
 import { observer } from "mobx-react-lite";
 import React, { useState } from "react";
 import { Button, ButtonGroup, Dropdown, Table } from "semantic-ui-react";
+import { Customer } from "../../app/models/customer";
 import { useStore } from "../../stores/store";
 
-export default observer ( function DetailsTableRowCustomer() {
-
+export default observer(function DetailsTableRowCustomer() {
   // MobX
-  const {customerStore, orderStore} =useStore();
+  const { customerStore, orderStore } = useStore();
 
   const [customerId, setId] = useState("");
   const [editMode, setEditMode] = useState(false);
@@ -23,14 +23,30 @@ export default observer ( function DetailsTableRowCustomer() {
 
   function handleOnChange(e: any, data: any) {
     setId(data.value);
+    console.log(data.value);
   }
 
   function renderNewCustomerValue() {
-    let name = customerStore.customers.find(x=> x.customerId === customerId)!.customerName 
-    let surname = customerStore.customers.find(x=> x.customerId === customerId)!.customerSurname;
-    orderStore.selectedOrder!.customer.customerName=name;
-    orderStore.selectedOrder!.customer.customerSurname=surname;
+    let name = customerStore.customers.find(
+      (x) => x.customerId === customerId
+    )!.customerName;
+    let surname = customerStore.customers.find(
+      (x) => x.customerId === customerId
+    )!.customerSurname;
+    console.log(name);
+    console.log(surname);
+    if (orderStore.selectedOrder!.customer) {
+      orderStore.selectedOrder!.customer.customerName = name;
+      orderStore.selectedOrder!.customer.customerSurname = surname;
+    } else {
+      let customer = {
+        customerName: name,
+        customerSurname: surname,
+      } as Customer;
+      orderStore.selectedOrder!.customer = customer;
+    }
   }
+  
 
   return (
     <Table.Row>
@@ -41,7 +57,8 @@ export default observer ( function DetailsTableRowCustomer() {
         {!editMode && (
           <>
             <div style={{ display: "inline-block", padding: "0.45em 0" }}>
-              {orderStore.selectedOrder?.customer.customerName} {orderStore.selectedOrder?.customer.customerSurname}
+              {orderStore.selectedOrder?.customer?.customerName}{" "}
+              {orderStore.selectedOrder?.customer?.customerSurname}
             </div>
             <Button
               size="tiny"
@@ -91,4 +108,4 @@ export default observer ( function DetailsTableRowCustomer() {
       </Table.Cell>
     </Table.Row>
   );
-})
+});

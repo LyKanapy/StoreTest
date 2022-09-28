@@ -39,8 +39,9 @@ export default observer(function AdminProducts() {
   return (
     <>
       <AdminMenu activeItem="products" />
+      
       <AddEntityModal
-        actionName="Add Product"
+        actionName="Product"
         onAction={handleAdd}
         component={<AdminAddProduct handleAddEntity={handleProductToAdd} />}
       />
